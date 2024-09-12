@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <title>giovane machado</title>
+    <style>
+        .general {
+            background-color: rgba(236, 227, 202, 1);
+        }
+
+        .imagem-container {
+            display: flex;
+            align-items: end;
+            overflow: hidden;
+            max-height: 350px;
+        }
+
+        .imagem-container img {
+            width: auto;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .zilla-slab-regular {
+            font-family: "Zilla Slab", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .zilla-slab-bold {
+            font-family: "Zilla Slab", serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+    </style>
+</head>
+
+<body class="general">
+    <div class="container max-w-[450px] ml-2 mt-2 zilla-slab-regular">
+        <div class="imagem-container">
+            <img src="tralha.jpeg"
+                alt="uma cachorrinha, chamada tralha, que mora comigo / a dog, called tralha, who lives with me" />
+        </div>
+        <div class="flex w-full justify-between mt-4 mb-2">
+            <h1 class="text-3xl zilla-slab-bold ">giovane machado</h1>
+            <div>
+                <a href="#" onclick="showContent('pt-br')">pt-br</a>
+                <a href="#" onclick="showContent('en-us')">en-us</a>
+            </div>
+        </div>
+        <div id="pt-br" style="display:block">
+            <p>
+                olá, sou um fullstack engineer desde 2019, gosto de passar tempo meu tempo livre com a minha família,
+                ou jogando algo. vivo em uma cidade pequena
+                de santa catarina - brasil, e trabalho remoto desde sempre.
+            </p>
+            <br />
+            <p>
+                minha experiência profissional inclui startups de diversas áreas (no brasil e nos estados unidos),
+                trabalhando com aplicações para web e também mobile. fora isso, ainda sou um aspirante a game
+                dev/designer.
+            </p>
+            <br />
+            <div>
+                <span class="zilla-slab-bold">minha stack:</span>
+                <ul>
+                    <li>* javascript (com ts, sempre)</li>
+                    <li>* react para o frontend</li>
+                    <li>* nest para o backend</li>
+                    <li>* godot (com gdscript) para os jogos</li>
+                </ul>
+            </div>
+            <br />
+            <div>
+                <span class="zilla-slab-bold">links para falar comigo/ver o meu trabalho:</span>
+                <ul>
+                    <li>* <a href="https://www.linkedin.com/in/giovanenolink">linkedin.com/in/giovanenolink</a></li>
+                    <li>* <a href="https://github.com/giovanemachado">github.com/giovanemachado</a></li>
+                    <li>* <a href="https://giovanemachado.itch.io/">giovanemachado.itch.io</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="en-us" style="display:none">
+            <p>
+                hey, I've been a fullstack engineer since 2019, and like to spend free time with my family or playing
+                games.
+                I live in a small town in santa catarina, brazil, and have always worked remotely.
+            </p>
+            <br />
+            <p>
+                my professional experience includes working with startups from various fields (both in brazil and the
+                usa),
+                developing web and mobile applications. besides that, I'm also an aspiring game dev/designer.
+            </p>
+            <br />
+            <div>
+                <span class="zilla-slab-bold">my stack:</span>
+                <ul>
+                    <li>* javascript (always with typescript)</li>
+                    <li>* react for frontend</li>
+                    <li>* nest for backend</li>
+                    <li>* godot (with gdscript) for games</li>
+                </ul>
+            </div>
+            <br />
+            <div>
+                <span class="zilla-slab-bold">links to reach me/see my work:</span>
+                <ul>
+                    <li>* <a href="https://www.linkedin.com/in/giovanenolink">linkedin.com/in/giovanenolink</a></li>
+                    <li>* <a href="https://github.com/giovanemachado">github.com/giovanemachado</a></li>
+                    <li>* <a href="https://giovanemachado.itch.io/">giovanemachado.itch.io</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        const portugueseTag = 'pt-br'
+        const englishTag = 'en-us'
+
+        function showContent(lang) {
+            if (lang === portugueseTag) {
+                document.getElementById(englishTag).style.display = "none";
+            }
+
+            if (lang === englishTag) {
+                document.getElementById(portugueseTag).style.display = "none";
+            }
+
+            document.getElementById(lang).style.display = "block";
+        }
+    </script>
+</body>
+
+</html>
