@@ -3,53 +3,19 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="build.css">
+    <link rel="stylesheet" href="custom.css">
     <title>giovane machado</title>
-    <style>
-        body {
-            background-color: rgba(236, 227, 202, 1);
-        }
-
-        .imagem-container {
-            display: flex;
-            align-items: end;
-            overflow: hidden;
-            max-height: 350px;
-        }
-
-        .imagem-container img {
-            width: auto;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .zilla-slab-regular {
-            font-family: "Zilla Slab", serif;
-            font-weight: 400;
-            font-style: normal;
-            color: rgba(40, 36, 37, 1);
-        }
-
-        .zilla-slab-bold {
-            font-family: "Zilla Slab", serif;
-            font-weight: 700;
-            font-style: normal;
-            color: rgba(40, 36, 37, 1);
-        }
-    </style>
 </head>
 
 <body>
-    <div class="container max-w-[450px] px-2 py-2 zilla-slab-regular">
+    <div class="container max-w-[450px] px-2 py-2 font-mono">
         <div class="">
             <img class="object-scale-down" src="tralha.jpeg"
                 alt="uma cachorrinha, chamada tralha, que mora comigo / a dog, called tralha, who lives with me" />
         </div>
         <div class="flex w-full justify-between mt-4 mb-2">
-            <h1 class="text-3xl zilla-slab-bold ">giovane machado</h1>
+            <h1 class="text-3xl font-bold ">giovane machado</h1>
             <div class="flex flex-col">
                 <a class="underline" href="#" onclick="showContent('pt-br')">pt-br</a>
                 <a class="underline" href="#" onclick="showContent('en-us')">en-us</a>
@@ -69,7 +35,7 @@
             </p>
             <br />
             <div>
-                <span class="zilla-slab-bold">minha stack:</span>
+                <span class="font-bold">minha stack:</span>
                 <ul>
                     <li>* javascript (com ts, sempre)</li>
                     <li>* react para o frontend</li>
@@ -79,7 +45,7 @@
             </div>
             <br />
             <div>
-                <span class="zilla-slab-bold">links para falar comigo/ver o meu trabalho:</span>
+                <span class="font-bold">links para falar comigo/ver o meu trabalho:</span>
                 <ul>
                     <li>* <a class="underline"
                             href="https://www.linkedin.com/in/giovanenolink">linkedin.com/in/giovanenolink</a></li>
@@ -104,7 +70,7 @@
             </p>
             <br />
             <div>
-                <span class="zilla-slab-bold">my stack:</span>
+                <span class="font-bold">my stack:</span>
                 <ul>
                     <li>* javascript (always with typescript)</li>
                     <li>* react for frontend</li>
@@ -114,7 +80,7 @@
             </div>
             <br />
             <div>
-                <span class="zilla-slab-bold">links to reach me/see my work:</span>
+                <span class="font-bold">links to reach me/see my work:</span>
                 <ul>
                     <li>* <a href="https://www.linkedin.com/in/giovanenolink">linkedin.com/in/giovanenolink</a></li>
                     <li>* <a href="https://github.com/giovanemachado">github.com/giovanemachado</a></li>
