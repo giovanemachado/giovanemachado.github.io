@@ -2,13 +2,14 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;700&display=swap" rel="stylesheet">
     <title>giovane machado</title>
     <style>
-        .general {
+        body {
             background-color: rgba(236, 227, 202, 1);
         }
 
@@ -39,7 +40,7 @@
     </style>
 </head>
 
-<body class="general">
+<body>
     <div class="container max-w-[450px] ml-2 mt-2 zilla-slab-regular">
         <div class="imagem-container">
             <img src="tralha.jpeg"
@@ -47,9 +48,9 @@
         </div>
         <div class="flex w-full justify-between mt-4 mb-2">
             <h1 class="text-3xl zilla-slab-bold ">giovane machado</h1>
-            <div>
-                <a href="#" onclick="showContent('pt-br')">pt-br</a>
-                <a href="#" onclick="showContent('en-us')">en-us</a>
+            <div class="flex flex-col pr-2">
+                <a class="underline" href="#" onclick="showContent('pt-br')">pt-br</a>
+                <a class="underline" href="#" onclick="showContent('en-us')">en-us</a>
             </div>
         </div>
         <div id="pt-br" style="display:block">
@@ -78,9 +79,11 @@
             <div>
                 <span class="zilla-slab-bold">links para falar comigo/ver o meu trabalho:</span>
                 <ul>
-                    <li>* <a href="https://www.linkedin.com/in/giovanenolink">linkedin.com/in/giovanenolink</a></li>
-                    <li>* <a href="https://github.com/giovanemachado">github.com/giovanemachado</a></li>
-                    <li>* <a href="https://giovanemachado.itch.io/">giovanemachado.itch.io</a></li>
+                    <li>* <a class="underline"
+                            href="https://www.linkedin.com/in/giovanenolink">linkedin.com/in/giovanenolink</a></li>
+                    <li>* <a class="underline" href="https://github.com/giovanemachado">github.com/giovanemachado</a>
+                    </li>
+                    <li>* <a class="underline" href="https://giovanemachado.itch.io/">giovanemachado.itch.io</a></li>
                 </ul>
             </div>
         </div>
