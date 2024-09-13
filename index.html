@@ -9,7 +9,7 @@
     <title>giovane machado</title>
 </head>
 
-<body>
+<body onload="firstLoad()">
     <div class="container max-w-[450px] px-2 py-2 font-mono">
         <img class="object-scale-down" src="stuff/tralha.jpeg"
             alt="uma cachorrinha, chamada tralha, que mora comigo / a dog, called tralha, who lives with me" />
@@ -20,7 +20,10 @@
                 <a class="underline" href="#" onclick="showContent('en-us')">en-us</a>
             </div>
         </div>
-        <div id="pt-br" style="display:block">
+        <noscript>
+            <p>as coisas aparecem se você tem javascript habilitado / stuff show up if you have javascript enabled</p>
+        </noscript>
+        <div id="pt-br" style="display:none">
             <p>
                 olá, sou um fullstack engineer desde 2019, gosto de passar tempo meu tempo livre com a minha família,
                 ou jogando algo. vivo em uma cidade pequena
@@ -105,7 +108,19 @@
         const portugueseTag = 'pt-br'
         const englishTag = 'en-us'
 
-        function showContent(lang) {
+        const firstLoad = () => {
+            const lang = localStorage.getItem("lang");
+
+            if (lang) {
+                showContent(lang)
+            } else {
+                showContent(portugueseTag)
+            }
+        }
+
+        const showContent = (lang) => {
+            localStorage.setItem("lang", lang);
+
             if (lang === portugueseTag) {
                 document.getElementById(englishTag).style.display = "none";
             }
