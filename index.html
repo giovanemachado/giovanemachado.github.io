@@ -5,14 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="stuff/build.css">
     <link rel="stylesheet" href="stuff/custom.css">
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <link rel="icon" type="image/x-icon" href="/stuff/favicon.png">
     <title>giovane machado</title>
 </head>
 
 <body onload="firstLoad()">
-    <div class="container max-w-[450px] px-2 py-2 font-mono">
-        <img class="object-scale-down" src="stuff/tralha.jpeg"
-            alt="uma cachorrinha, chamada tralha, que mora comigo / a dog, called tralha, who lives with me" />
+    <div id="content"
+        class="opacity-0 transition-opacity ease-in delay-150  duration-100 container max-w-[450px] px-2 py-2 font-mono">
+        <img id="tralha" style="display:none" class="object-scale-down" src="stuff/tralha.jpeg"
+            alt="um dos meus cachorrinhos / one of my dogs" />
+        <img id="treco" style="display:none" class="object-scale-down" src="stuff/treco.png"
+            alt="um dos meus cachorrinhos / one of my dogs" />
+        <img id="tirulico" style="display:none" class="object-scale-down" src="stuff/tirulico.png"
+            alt="um dos meus cachorrinhos / one of my dogs" />
         <div class="flex w-full justify-between mt-4 mb-2">
             <h1 class="text-3xl font-bold ">giovane machado</h1>
             <div class="flex flex-col">
@@ -110,6 +116,7 @@
 
         const firstLoad = () => {
             const lang = localStorage.getItem("lang");
+            getRandomDog()
 
             if (lang) {
                 showContent(lang)
@@ -117,6 +124,45 @@
                 showContent(portugueseTag)
             }
         }
+
+
+        const getRandomDog = () => {
+            const dogCounter = localStorage.getItem("dogCounter");
+            let index = dogCounter
+
+            if (dogCounter == null) {
+                localStorage.setItem("dogCounter", 0);
+                index = 0
+            } else {
+                localStorage.setItem("dogCounter", +index + 1);
+
+                if (index >= 2) {
+                    localStorage.setItem("dogCounter", 0);
+                }
+
+                index++
+            }
+
+
+            switch (+index) {
+                case 0:
+                    document.getElementById("tralha").style.display = "block";
+                    break;
+
+                case 1:
+                    document.getElementById("treco").style.display = "block";
+                    break;
+
+                case 2:
+                    document.getElementById("tirulico").style.display = "block";
+                    break;
+
+                default:
+                    document.getElementById("tralha").style.display = "block";
+                    break;
+            }
+        }
+
 
         const showContent = (lang) => {
             localStorage.setItem("lang", lang);
@@ -130,6 +176,7 @@
             }
 
             document.getElementById(lang).style.display = "block";
+            document.getElementById("content").style.opacity = 100;
         }
     </script>
 </body>
