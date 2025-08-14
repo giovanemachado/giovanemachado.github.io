@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="stuff/build.css">
     <link rel="stylesheet" href="stuff/custom.css">
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="stuff/lang.js"></script>
     <link rel="icon" type="image/x-icon" href="/stuff/favicon.png">
     <title>giovane machado</title>
 </head>
@@ -29,156 +30,8 @@
         <noscript>
             <p>as coisas aparecem se você tem javascript habilitado / stuff show up if you have javascript enabled</p>
         </noscript>
-        <div id="pt-br" style="display:none">
-            <p>
-                olá, sou um fullstack engineer desde 2019, gosto de passar tempo meu tempo livre com a minha família,
-                ou jogando algo. vivo em uma cidade pequena
-                de santa catarina - brasil, e trabalho remoto desde sempre.
-            </p>
-            <br />
-            <p>
-                minha experiência profissional inclui startups de diversas áreas (no brasil e nos estados unidos),
-                trabalhando com aplicações para web e também mobile. fora isso, ainda sou um aspirante a game
-                dev/designer.
-            </p>
-            <br />
-            <div>
-                <span class="font-bold">minha stack:</span>
-                <ul>
-                    <li>* javascript (com ts, sempre)</li>
-                    <li>* react para o frontend</li>
-                    <li>* nest para o backend</li>
-                    <li>* godot (com gdscript) para os jogos</li>
-                </ul>
-            </div>
-            <br />
-            <div>
-                <span class="font-bold">links para falar comigo/ver o meu trabalho:</span>
-                <ul>
-                    <li>* <a class="underline" target="_blank"
-                            href="https://www.linkedin.com/in/giovanenolink">linkedin.com/in/giovanenolink</a></li>
-                    <li>* <a class="underline" target="_blank"
-                            href="https://github.com/giovanemachado">github.com/giovanemachado</a>
-                    </li>
-                    <li>* <a class="underline" target="_blank"
-                            href="https://giovanemachado.itch.io/">giovanemachado.itch.io</a></li>
-                </ul>
-            </div>
-            <!-- <div>
-                <span class="font-bold">artigos:</span>
-                <ul>
-                    <li>* <a class="underline" target="_blank" href="/posts/a-post.html">test-post</a></li>
-                </ul>
-            </div> -->
-        </div>
-
-        <div id="en-us" style="display:none">
-            <p>
-                hey, I've been a fullstack engineer since 2019, and like to spend free time with my family or playing
-                games.
-                I live in a small town in santa catarina, brazil, and have always worked remotely.
-            </p>
-            <br />
-            <p>
-                my professional experience includes working with startups from various fields (both in brazil and the
-                usa),
-                developing web and mobile applications. besides that, I'm also an aspiring game dev/designer.
-            </p>
-            <br />
-            <div>
-                <span class="font-bold">my stack:</span>
-                <ul>
-                    <li>* javascript (always with typescript)</li>
-                    <li>* react for frontend</li>
-                    <li>* nest for backend</li>
-                    <li>* godot (with gdscript) for games</li>
-                </ul>
-            </div>
-            <br />
-            <div>
-                <span class="font-bold">links to reach me/see my work:</span>
-                <ul>
-                    <li>* <a class="underline" target="_blank"
-                            href="https://www.linkedin.com/in/giovanenolink">linkedin.com/in/giovanenolink</a></li>
-                    <li>* <a class="underline" target="_blank"
-                            href="https://github.com/giovanemachado">github.com/giovanemachado</a>
-                    </li>
-                    <li>* <a class="underline" target="_blank"
-                            href="https://giovanemachado.itch.io/">giovanemachado.itch.io</a></li>
-                </ul>
-            </div>
-        </div>
-
+        <div id="home-content"></div>
     </div>
-    <script>
-        const portugueseTag = 'pt-br'
-        const englishTag = 'en-us'
-
-        const firstLoad = () => {
-            const lang = localStorage.getItem("lang");
-            getRandomDog()
-
-            if (lang) {
-                showContent(lang)
-            } else {
-                showContent(portugueseTag)
-            }
-        }
-
-
-        const getRandomDog = () => {
-            const dogCounter = localStorage.getItem("dogCounter");
-            let index = dogCounter
-
-            if (dogCounter == null) {
-                localStorage.setItem("dogCounter", 0);
-                index = 0
-            } else {
-                localStorage.setItem("dogCounter", +index + 1);
-
-                if (index >= 2) {
-                    localStorage.setItem("dogCounter", 0);
-                }
-
-                index++
-            }
-
-
-            switch (+index) {
-                case 0:
-                    document.getElementById("tralha").style.display = "block";
-                    break;
-
-                case 1:
-                    document.getElementById("treco").style.display = "block";
-                    break;
-
-                case 2:
-                    document.getElementById("tirulico").style.display = "block";
-                    break;
-
-                default:
-                    document.getElementById("tralha").style.display = "block";
-                    break;
-            }
-        }
-
-
-        const showContent = (lang) => {
-            localStorage.setItem("lang", lang);
-
-            if (lang === portugueseTag) {
-                document.getElementById(englishTag).style.display = "none";
-            }
-
-            if (lang === englishTag) {
-                document.getElementById(portugueseTag).style.display = "none";
-            }
-
-            document.getElementById(lang).style.display = "block";
-            document.getElementById("content").style.opacity = 100;
-        }
-    </script>
 </body>
 
 </html>
