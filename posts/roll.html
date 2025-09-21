@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../stuff/build.css">
+    <link rel="stylesheet" href="../stuff/custom.css">
+    <title>roll</title>
+</head>
+
+<body>
+    <div class="container max-w-[450px] px-2 py-2 font-mono">
+        <div class="flex w-full justify-between mt-4 mb-2">
+            <h1 class="text-3xl font-bold">roll</h1>
+            <div class="flex flex-col">
+                <a class="underline" href="../index.html">voltar</a>
+            </div>
+        </div>
+        <div id="pt-br" style="display:block">
+            <p>
+                roll é um sistema de rpg simples e direto, altamente aberto à interpretação dos jogadores.
+                inspirado por outros sistemas, principalmente <a class="underline" target="_blank"
+                    href="https://www.13thagesrd.com/">13a era</a> e <a class="underline" target="_blank"
+                    href="https://jasontocci.itch.io/24xx">2400</a>
+            </p>
+            <br />
+            <h2 class="text-xl font-bold mt-6 mb-2">criando um personagem</h2>
+            <p>
+                para criar seu personagem. você criará um conceito, alguns antecedentes e itens. também receberá pontos
+                de vida (pv).
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">conceito</h3>
+            <p>
+                uma frase ou parágrafo simples, que descreva seu personagem quando você for falar dessa aventura para
+                outras pessoas.
+                não tem efeitos no jogo, mas incrementa sua história. também te serve como um guia, para você lembrar
+                quem você é.
+                você pode incrementar isso a vontade com uma descrição completa e história inicial do personagem.
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">antecedentes</h3>
+            <p>
+                frases que definem o seu personagem, geralmente o passado dele, com pontuações atribuídas.
+                você pode usar isso para extender o seu conceito, ou pegar trechos do background dele para isso.
+                antecedentes dão a você dados extras para rolagens. você começa com 3 pontos de antecedentes (pa),
+                os quais você deve associar a cada um de seus antecedentes. você pode atribuir no máximo 2 dados
+                para um mesmo antecedente, o que significa que você começa o jogo com no mínimo 2, e no máximo 3
+                antecedentes.
+            </p>
+            <p>
+                os antecedentes sempre ajudam a somar dados (sendo 1 dado por ponto) em testes que você puder explicar
+                como eles ajudam, incluindo combates. não use mais de um antecedente no mesmo teste.
+            </p>
+            <p>
+                antecedentes não podem ter mais de 3 pontos atribuídos.
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">itens</h3>
+            <p>
+                itens são parte importante de um personagem. escolha 1 ou 2 itens, dando a eles um nome composto
+                por uma descrição simples e um adjetivo à sua escolha. você começa com 2 pontos de itens (pi),
+                os quais você deve associar a cada um de seus itens.
+            </p>
+            <p>
+                os itens sempre ajudam a somar dados (sendo 1 dado por ponto) em testes que você puder explicar
+                como eles ajudam, incluindo combates. não use mais de um item no mesmo teste.
+            </p>
+            <p>
+                itens não podem ter mais de 3 pontos atribuídos.
+            </p>
+            <p>
+                você tem outros objetos com você, todos que fizerem sentido, mas só os nomeados aqui fazem diferença.
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">pontos de vida (pv)</h3>
+            <p>
+                todo personagem começa com 6 pontos de vida (pv). eles representam o quanto os personagens podem apanhar
+                e continuar lutando.
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">pontos de experiência (pe)</h3>
+            <p>
+                o mestre distribui ao grupo pontos de experiência (pe) no final da sessão. geralmente de 1 a 3 pontos,
+                que todos ganham igualmente. eles representam de forma abstrata a experiência que os personagens estão
+                obtendo nessas aventuras.
+            </p>
+            <p>
+                o jogador pode escolher gastar eles:
+            </p>
+            <ul class="list-disc ml-8 mb-4">
+                <li>5 pes em troca de 1 pv permanente para o seu personagem.</li>
+                <li>10 pes em troca de 1 pa permanente para o personagem.</li>
+                <li>10 pes em troca de 1 pi permanente para o personagem.</li>
+            </ul>
+
+            <br />
+            <h2 class="text-xl font-bold mt-6 mb-2">jogando</h2>
+            <p>
+                o jogo é uma história, onde todos participam, com o narrador descrevendo o ambiente e fatos gerais,
+                enquanto os jogadores interpretam seus personagens nesse mundo.
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">testes</h3>
+            <p>
+                testes são necessários quando o mundo ou alguém quer te impedir de fazer algo.
+                então você roda dados. pegue dados de 6 lados (d6). você sempre rodará no mínimo 1.
+            </p>
+            <p>
+                quando precisar realizar um teste:
+            </p>
+            <ol class="list-decimal ml-8 mb-4">
+                <li>adicione o 1º dado, esse você sempre roda.</li>
+                <li>adicione ou remova dados conforme as condições que você estiver vivenciando, definidas pelo
+                    narrador.</li>
+                <li>adicione dados conforme 1 dos seus antecedentes, se você puder explicar porque, autorizado pelo
+                    narrador.</li>
+                <li>adicione dados conforme 1 dos seus itens, se você puder explicar porque, autorizado pelo narrador.
+                </li>
+            </ol>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">sucesso</h3>
+            <p>
+                se qualquer dado exibir um 5 ou 6, você teve sucesso. em um sucesso, você realiza seu objetivo.
+                isso não significa que você pode escolher tudo que acontece.
+            </p>
+            <p>
+                se 3 dados exibirem um 6, você teve um sucesso crítico. em um sucesso crítico, você tem os mesmos
+                resultados de um sucesso, mas de maneira mais especial. o narrador pode usar isso para te dar mais
+                vantagens,
+                e você também pode sugerir que algo a mais aconteça na cena. é um momento especial. e além disso,
+                em caso de estar causando dano, dobre (todos os sucessos x 2).
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">falha</h3>
+            <p>
+                se nenhum dado exibir um 5 ou 6, você teve uma falha. em uma falha você não conseguiu realizar o que
+                queria,
+                da forma que queria. o narrador pode inclusive dizer que você concluiu seu objetivo,
+                mas algo a mais, negativo, surgiu no seu caminho.
+            </p>
+            <p>
+                se 3 dados exibirem um 1, você teve uma falha crítica. em uma falha crítica o narrador pode
+                incrementar as coisas ainda mais e fazer tudo ficar mais difícil, ou divertido. use sua imaginação.
+                é um momento especial.
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">condições</h3>
+            <p>
+                condições são efeitos do mundo e da situação que podem estar te atrapalhando ou ajudando,
+                geralmente trazidos pelo narrador. elas podem adicionar ou remover dados em testes,
+                e podem ser temporários, situacionais, etc.
+            </p>
+            <p>
+                mais de uma condição pode estar afetando um personagem ao mesmo tempo, e todas elas somam (ou subtraem)
+                dados.
+            </p>
+            <p>
+                você pode remover uma condição, que faça sentido, com uma cura. você também sempre pode se livrar
+                de condições negativas caso isso faça sentido. por exemplo, estar vestindo uma armadura pesada
+                pode ser uma condição negativa em uma corrida, então você pode se despir!
+            </p>
+            <p>
+                uma condição positiva é algo que adiciona 1d6, e uma negativa é algo que remove 1d6.
+            </p>
+            <p>
+                condições podem ser especiais também, como habilidades. faz sentido que uma condição
+                pegando fogo cause 1 de dano por turno, então ela causa.
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">curar</h3>
+            <p>
+                todos os personagens podem ser curados 1 vez entre descansos curtos.
+                o personagem pode ser curado por um aliado, ou por si mesmo.
+            </p>
+            <p>
+                rola-se um teste para isso. em caso de sucesso recupera 1 pv por sucesso, ou remove 1 condição.
+            </p>
+            <p>
+                em caso de sucesso crítico, recupera o dobro e remove 2 condições.
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">ajudar</h3>
+            <p>
+                você pode usar sua ac para ajudar um aliado. assim o próximo teste dele ganha 1 d6 extra.
+                você precisa explicar como fará isso.
+            </p>
+            <p>
+                você não pode ajudar o mesmo aliado mais de uma vez caso ele não tenha feito nenhum teste com sua ajuda
+                ainda.
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">descansos</h3>
+            <h4 class="font-bold mt-2">curtos</h4>
+            <p>
+                um descanso curto é uma parada onde os personagens se alimentam e descansam tranquilamente por algumas
+                horas.
+            </p>
+            <p>
+                em um descanso curto, os personagens ganham de volta sua cura. caso não tenham gasto, podem
+                fazê-lo durante o descanso para aproveitar e manter uma ativa na próxima parte da jornada.
+                condições que façam sentido ou sejam temporárias são removidas.
+            </p>
+
+            <h4 class="font-bold mt-2">longos</h4>
+            <p>
+                um descanso longo é uma parada longa na história, onde os personagens se alimentam
+                e descansam tranquilamente por alguns dias.
+            </p>
+            <p>
+                todos os personagens são curados totalmente em um descanso longo.
+                também ganham os benefícios de um descanso curto.
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">armas e dano</h3>
+            <p>
+                geralmente dano será causado apenas em combate, mas você pode receber dano de outras maneiras,
+                como em uma queda. ou ser brutalmente atingido por uma faca enquanto dorme.
+            </p>
+            <p>
+                esse tipo de dano pode variar de 1 pv a todos que você tiver, dependendo do narrador.
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">movimento</h3>
+            <p>
+                você se move livremente pelas cenas, como for interessante. e também pelo mundo,
+                com ajuda do narrador para definir possibilidades e tempo de viagem.
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">combate e acs</h3>
+            <p>
+                os combates são por turnos. os personagens agem primeiro, na ordem que lhes for interessante.
+                mas em uma fixa, para facilitar as coisas. em cada turno, você pode fazer 1 ação de combate (ac).
+                os personagens estão em combate quando isso fizer sentido.
+                caso não seja uma situação de combate, use as outras regras do livro
+                (testes, curar, ajudar, devem resolver tudo).
+            </p>
+
+            <h4 class="font-bold mt-2">atacar</h4>
+            <p>
+                uma ac que causa dano. cada sucesso será um ponto de dano direto no pv do alvo.
+            </p>
+
+            <h4 class="font-bold mt-2">defender</h4>
+            <p>
+                uma ac que coloca você na defensiva, permitindo que role um teste para evitar dano quando ele acontecer.
+                você pode usar isso para proteger um aliado. você sai dessa postura se escolher uma ac diferente.
+                você sai dessa postura ao realizar o teste para defender.
+            </p>
+
+            <h4 class="font-bold mt-2">focar</h4>
+            <p>
+                você pode usar sua ac para focar-se. assim seu próximo teste ganha 1d6 extra.
+                você precisa explicar como fará isso.
+            </p>
+            <p>
+                você não pode focar-se mais de uma vez consecutiva.
+            </p>
+
+            <h4 class="font-bold mt-2">ajudar, curar e movimento (em combate)</h4>
+            <p>
+                ajudar e curar em combate contam como uma acs.
+            </p>
+            <p>
+                movimento não conta como uma ac, você pode se mover uma vez em seu turno.
+            </p>
+
+            <h4 class="font-bold mt-2">armas e dano (em combate)</h4>
+            <p>
+                todas as armas causam 1 de dano por sucesso, reduzindo então 1 pv do alvo por sucesso.
+            </p>
+
+            <h3 class="text-lg font-bold mt-4 mb-2">morte</h3>
+            <p>
+                quando chegar a 0 pv, o personagem não pode realizar nenhuma ac.
+                qualquer aliado pode realizar 2 testes para tentar salvar o personagem.
+            </p>
+            <ul class="list-disc ml-8 mb-4">
+                <li>se tiver sucesso nos 2 testes, o personagem que estava para morrer volta à vida, e recebe uma cura
+                    sem precisar de teste.</li>
+                <li>se tiver sucesso em 1 teste, ele volta a vida, com 1 pv.</li>
+                <li>se falhar em ambos, ele morre.</li>
+                <li>se ninguém tentar salvar o personagem, ele em até 3 turnos, ele morre.</li>
+            </ul>
+
+            <br />
+            <h2 class="text-xl font-bold mt-6 mb-2">para o narrador</h2>
+            <h3 class="text-lg font-bold mt-4 mb-2">bandos</h3>
+            <p>
+                um bando é um conjunto de npcs parecidos, que agem em conjunto. soma todos seus pv individuais,
+                contando como um só, e recebem dano como um só. cada vez que uma parte dos pv equivalente
+                à uma unidade do bando for causado como dano, um dos membros do bando morre, enfraquecendo-os.
+            </p>
+            <p>
+                um bando roda testes para ac apenas uma vez, ganhando +1 dado por membro, e os antecedentes e condições
+                uma única vez.
+            </p>
+            <p>
+                um bandido comum por exemplo:
+            </p>
+
+            <div class="border p-4 my-4">
+                <h4 class="font-bold">bandido comum</h4>
+                <p>um bandido comum, mal armado, e mal amado.</p>
+                <p>pv: 2/2</p>
+                <p>antecedentes: bandido +1</p>
+                <p>equipamentos: faca +1</p>
+            </div>
+
+            <p>
+                atacaria com +2, podendo causar até 2 de dano por rodada, e tem 2 pv. já em bando:
+            </p>
+
+            <div class="border p-4 my-4">
+                <h4 class="font-bold">bando de bandidos (5)</h4>
+                <p>5 bandidos comuns.</p>
+                <p>pv: 10/10</p>
+                <p>antecedentes: bandido +1</p>
+                <p>equipamentos: faca +1</p>
+            </div>
+
+            <p>
+                atacaria com +7 (2 dos antecedentes e equipamentos, e 5 do número de bandidos),
+                causando até 7 de dano por rodada e tendo 10 pvs.
+            </p>
+            <p>
+                a cada 2 pv perdidos, perde-se um bandido e o bando se enfraquece
+                (rodando 1 dado a menos na sequência também).
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
