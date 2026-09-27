@@ -1,5 +1,5 @@
-const portugueseTag = 'pt-br'
-const englishTag = 'en-us'
+var portugueseTag = window.portugueseTag || 'pt-br'
+var englishTag = window.englishTag || 'en-us'
 
 const STACK_HTML = `<ul>
     <li>* typescript, react, sql, nosql, web, mobile </li>
