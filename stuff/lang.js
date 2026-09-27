@@ -61,9 +61,18 @@ const showContent = async (lang) => {
     }
 
     try {
-        const response = await fetch(fileName);
-        const content = await response.text();
+        const [homeResponse, stackResponse, linksResponse] = await Promise.all([
+            fetch(fileName),
+            fetch('lists/stack.html'),
+            fetch('lists/links.html')
+        ]);
+        const content = await homeResponse.text();
+        const stackContent = await stackResponse.text();
+        const linksContent = await linksResponse.text();
         document.getElementById("home-content").innerHTML = content;
+
+        document.getElementById("stack-list").innerHTML = stackContent;
+        document.getElementById("links-list").innerHTML = linksContent;
 
         // Mostrar o conteúdo na tela
         document.getElementById("content").style.opacity = 1;
