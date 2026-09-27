@@ -1,6 +1,10 @@
 const portugueseTag = 'pt-br'
 const englishTag = 'en-us'
 
+const POSTS = {};
+
+const POSTS_META = [];
+
 const strings = {
     'pt-br': {
         postsLabel: 'posts:',
@@ -12,26 +16,33 @@ const strings = {
 
 const currentLang = () => localStorage.getItem("lang") || portugueseTag
 
-const fetchOrThrow = async (path) => {
-    const response = await fetch(path);
-    if (!response.ok) throw new Error('HTTP ' + response.status + ' for ' + path);
-    return response.text();
+const counterpartOf = (key, lang) => {
+    const match = /^(.*)-(pt|en)(\.html)?$/.exec(key || '');
+    if (!match) return null;
+    return match[1] + (lang === englishTag ? '-en' : '-pt');
 }
 
-// `hello-pt.html` <-> `hello-en.html`. Returns null when the path
-// doesn't follow the `<slug>-<lang>.html` convention.
-const counterpartOf = (path, lang) => {
-    const match = /^(.*)-(pt|en)\.html$/.exec(path || '');
-    if (!match) return null;
-    return match[1] + (lang === englishTag ? '-en.html' : '-pt.html');
+const normalizePostKey = (key) => {
+    if (!key) return null;
+    if (POSTS[key]) return key;
+    const withoutExt = key.replace(/\.html$/, '');
+    if (POSTS[withoutExt]) return withoutExt;
+    return null;
 }
 
 const goNotFound = () => {
     window.location.href = '/404.html';
 }
 
+const renderPostsList = (lang) => {
+    return `<ul>` + POSTS_META
+        .filter((post) => post.lang === lang)
+        .sort((a, b) => a.date < b.date ? 1 : -1)
+        .map((post) => `<li>* <a class="underline" href="/posts/blog.html?lang=${lang}&post=${post.key}">${post.title} (${post.date})</a></li>`)
+        .join('') + `</ul>`;
+}
+
 const firstLoadBlog = async () => {
-    // BLOG DISABLED: redirect all direct blog URLs to 404; delete these 2 lines to re-enable blog
     goNotFound();
     return;
 
@@ -54,27 +65,19 @@ const firstLoadBlog = async () => {
 const showBlogList = async (lang, opts = {}) => {
     localStorage.setItem("lang", lang);
 
-    const fileName = lang === englishTag ? 'posts-en.html' : 'posts-pt.html';
     const currentPost = new URL(window.location).searchParams.get("post");
     let nextPost = null;
 
     document.getElementById("posts-label").textContent = strings[lang].postsLabel;
 
     try {
-        document.getElementById("posts-list").innerHTML = await fetchOrThrow(fileName);
+        document.getElementById("posts-list").innerHTML = renderPostsList(lang);
         attachPostsClickHandler();
 
-        // Switching language loads the same post in the other language.
-        const counterpart = counterpartOf(currentPost, lang);
-        if (counterpart) {
-            try {
-                document.getElementById("post-content").innerHTML = await fetchOrThrow(counterpart);
-                nextPost = counterpart;
-            } catch (postError) {
-                console.error('Erro ao carregar:', postError);
-                goNotFound();
-                return;
-            }
+        const counterpartKey = normalizePostKey(counterpartOf(currentPost, lang));
+        if (counterpartKey) {
+            document.getElementById("post-content").innerHTML = POSTS[counterpartKey];
+            nextPost = counterpartKey;
         } else {
             goNotFound();
             return;
@@ -99,11 +102,18 @@ const showBlogList = async (lang, opts = {}) => {
     }
 }
 
-const showPost = async (path, opts = {}) => {
+const showPost = async (key, opts = {}) => {
     const lang = currentLang();
 
+    const postKey = normalizePostKey(key);
+    if (!postKey) {
+        console.error('Erro ao carregar: unknown post ' + key);
+        goNotFound();
+        return;
+    }
+
     try {
-        document.getElementById("post-content").innerHTML = await fetchOrThrow(path);
+        document.getElementById("post-content").innerHTML = POSTS[postKey];
         document.getElementById("post-content").scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (error) {
         console.error('Erro ao carregar:', error);
@@ -113,7 +123,7 @@ const showPost = async (path, opts = {}) => {
 
     if (opts.updateUrl !== false) {
         const url = new URL(window.location);
-        url.searchParams.set("post", path);
+        url.searchParams.set("post", postKey);
         url.searchParams.set("lang", lang);
         window.history.replaceState({}, '', url);
     }
