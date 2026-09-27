@@ -1,0 +1,17 @@
+#!/bin/sh
+# Block direct pushes to the main branch.
+# Work on a feature branch and open a PR instead.
+#
+# Install (per clone, since .git/hooks/ is not versioned):
+#   cp hooks/pre-push .git/hooks/pre-push
+#   chmod +x .git/hooks/pre-push
+
+while read local_ref local_oid remote_ref remote_oid; do
+  if [ "$remote_ref" = "refs/heads/main" ]; then
+    echo "Direct pushes to 'main' are blocked. Push a feature branch and open a PR instead." >&2
+    echo "Bypass (not recommended): git push --no-verify" >&2
+    exit 1
+  fi
+done
+
+exit 0
