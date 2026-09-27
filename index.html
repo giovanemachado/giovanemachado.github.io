@@ -2,27 +2,34 @@
 <html>
 
 <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="stuff/build.css">
-    <link rel="stylesheet" href="stuff/custom.css">
+    <link rel="stylesheet" href="assets/build.css">
+    <link rel="stylesheet" href="assets/custom.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="stuff/lang.js"></script>
-    <link rel="icon" type="image/x-icon" href="/stuff/favicon.png">
+    <script src="stuff/home.js"></script>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
     <title>giovane machado</title>
 </head>
 
 <body onload="firstLoad()">
-    <div class="flex flex-col lg:flex-row gap-8 p-4 lg:p-8">
+    <div class="flex flex-col lg:flex-row gap-8 p-[2px] lg:p-[2px]">
         <div id="content"
-            class="opacity-0 transition-opacity ease-in delay-150  duration-100 container max-w-[450px] px-2 py-2 font-mono">
-            <img id="tralha" style="display:none" class="object-scale-down" src="stuff/tralha.jpeg"
-                alt="um dos meus cachorrinhos / one of my dogs" />
-            <img id="treco" style="display:none" class="object-scale-down" src="stuff/treco.png"
-                alt="um dos meus cachorrinhos / one of my dogs" />
-            <img id="tirulico" style="display:none" class="object-scale-down" src="stuff/tirulico.png"
-                alt="um dos meus cachorrinhos / one of my dogs" />
-            <div class="flex w-full justify-between mt-4 mb-2">
-                <h1 class="text-3xl font-bold ">giovane machado</h1>
+            class="opacity-0 transition-opacity ease-in delay-150  duration-100 container max-w-[450px] px-0 py-0 font-mono">
+            <div id="tralha" style="display:none" class="aspect-video w-full overflow-hidden">
+                <img class="w-full h-full object-cover" src="assets/tralha.jpeg"
+                    alt="um dos meus cachorrinhos / one of my dogs" />
+            </div>
+            <div id="treco" style="display:none" class="aspect-video w-full overflow-hidden">
+                <img class="w-full h-full object-cover" src="assets/treco.png"
+                    alt="um dos meus cachorrinhos / one of my dogs" />
+            </div>
+            <div id="tirulico" style="display:none" class="aspect-video w-full overflow-hidden">
+                <img class="w-full h-full object-cover" src="assets/tirulico.png"
+                    alt="um dos meus cachorrinhos / one of my dogs" />
+            </div>
+            <div class="flex w-full justify-between mt-0 mb-2">
+                <a class="underline" href="index.html"><h1 class="text-3xl font-bold ">giovane machado</h1></a>
                 <div class="flex flex-col">
                     <a class="underline" href="#" onclick="showContent('pt-br')">pt-br</a>
                     <a class="underline" href="#" onclick="showContent('en-us')">en-us</a>

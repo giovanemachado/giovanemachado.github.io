@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/build.css">
+    <link rel="stylesheet" href="../assets/custom.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../stuff/blog.js"></script>
+    <script src="hello-pt.js"></script>
+    <script src="hello-en.js"></script>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
+    <title>posts - giovane machado</title>
+</head>
+
+<body onload="firstLoadBlog()">
+    <div class="flex flex-col lg:flex-row gap-8 p-[2px] lg:p-[2px]">
+        <div id="content"
+            class="opacity-0 transition-opacity ease-in delay-150 duration-100 container max-w-[450px] px-0 py-0 font-mono">
+          <div class="flex w-full justify-between mt-0 mb-2">
+                <a class="underline" href="../index.html"><h1 class="text-3xl font-bold ">giovane machado</h1></a>
+                <div class="flex flex-col">
+                    <a class="underline" href="#" onclick="showBlogList('pt-br'); return false;">pt-br</a>
+                    <a class="underline" href="#" onclick="showBlogList('en-us'); return false;">en-us</a>
+                </div>
+            </div>
+            <noscript>
+                <p>as coisas aparecem se você tem javascript habilitado / stuff show up if you have javascript enabled
+                </p>
+            </noscript>
+            <div id="post-content"></div>
+            <br />
+            <div>
+                <span id="posts-label" class="font-bold">posts:</span>
+                <div id="posts-list"></div>
+            </div>
+        </div>
+        <div class="flex-1 flex justify-center items-center min-w-0">
+            <iframe></iframe>
+        </div>
+    </div>
+</body>
+
+</html>
