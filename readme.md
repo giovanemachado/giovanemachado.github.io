@@ -3,7 +3,7 @@
 <li><a href="https://giovanemachado.github.io/">giovanemachado.github.io</a></li>
 
 ### utils
-- you can run the server with anything (it is just html and js), for example: `python3 - m http.server`, which will make it work on localhost:8000
+- you can run the server with anything (it is just html and js), for example: `python3 -m http.server`, which will make it work on localhost:8000
 - autodeploy on merge with main (see actions)
 - uncomment `<!-- <script src="https://cdn.tailwindcss.com"></script> -->` for dev
 - run `npx tailwindcss -o assets/build.css --minify` to build tailwind css
