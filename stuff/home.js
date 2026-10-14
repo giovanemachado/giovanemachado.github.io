@@ -56,8 +56,8 @@ const firstLoad = async () => {
 const DOGS = ["tralha", "treco", "tirulico"];
 
 const getRandomDog = () => {
-    const stored = localStorage.getItem("dogCounter");
-    const index = stored == null ? 0 : (+stored + 1) % DOGS.length;
+    const raw = Number.parseInt(localStorage.getItem("dogCounter"), 10);
+    const index = Number.isNaN(raw) ? 0 : (raw + 1) % DOGS.length;
     localStorage.setItem("dogCounter", index);
     const shown = document.getElementById(DOGS[index]) || document.getElementById(DOGS[0]);
     shown.style.display = "block";

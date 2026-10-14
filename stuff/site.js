@@ -18,7 +18,7 @@ const getItems = (slug) => {
 };
 
 const getRecentPosts = () => {
-    return [...(window.POSTS_DATA || [])].sort((a, b) => a.date < b.date ? 1 : -1);
+    return [...(window.POSTS_DATA || [])].sort((a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
 };
 
 const sortByStars = (list) => {
@@ -126,12 +126,15 @@ const loadedSlugs = new Set();
 
 const loadPostFile = (base, slug) => new Promise((resolve) => {
     if (loadedSlugs.has(slug)) { resolve(); return; }
-    loadedSlugs.add(slug);
     const el = document.createElement('script');
     el.src = new URL(slug + '.js', base).href;
-    el.onload = () => resolve();
+    el.onload = () => {
+        loadedSlugs.add(slug);
+        resolve();
+    };
     el.onerror = () => {
         console.error('Erro ao carregar post: ' + slug);
+        loadedSlugs.delete(slug);
         resolve();
     };
     document.head.appendChild(el);

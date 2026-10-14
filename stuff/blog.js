@@ -16,6 +16,7 @@ const bootBlog = () => {
 
 const renderArchiveBody = (data, lang) => {
     const rows = getRecentPosts()
+        .filter((post) => !post.archive)
         .map((post) => {
             const key = post.slug + (lang === window.englishTag ? '-en' : '-pt');
             return `<li>* <a class="underline" href="/posts/blog.html?lang=${lang}&post=${key}">${post.title[lang]} (${post.date})</a></li>`;
@@ -25,9 +26,11 @@ const renderArchiveBody = (data, lang) => {
 
 const renderPostBody = (data, lang) => {
     if (data.archive) return renderArchiveBody(data, lang);
+    const bodyHtml = (data.body && (data.body[lang] || data.body[window.portugueseTag])) || '';
+    const body = bodyHtml ? `<br />\n    <div>${bodyHtml}</div>` : '';
     const rows = sortByStars(data.items || []).map(([title, rating]) => starsRow(title, rating, lang)).join("\n        ");
     const list = rows ? `<br />\n    <ul>\n        ${rows}\n    </ul>` : '';
-    return `<div>\n    <h2 class="text-xl font-bold">${data.title[lang]}</h2>\n    <p class="opacity-70">${data.date}</p>\n    <br />\n    <p>${data.intro[lang]}</p>${list}\n</div>`;
+    return `<div>\n    <h2 class="text-xl font-bold">${data.title[lang]}</h2>\n    <p class="opacity-70">${data.date}</p>\n    <br />\n    <p>${data.intro[lang]}</p>${body}${list}\n</div>`;
 };
 
 const registerPost = (data) => {
@@ -78,7 +81,12 @@ const firstLoadBlog = async () => {
         await showPost(post, { updateUrl: false });
     } else {
         const lang = params.get("lang") || localStorage.getItem("lang") || window.portugueseTag;
-        await showBlogList(lang, { updateUrl: false });
+        const archiveKey = postKeyFor('all', lang);
+        if (POSTS[archiveKey]) {
+            await showPost(archiveKey, { updateUrl: false });
+        } else {
+            await showBlogList(lang, { updateUrl: false });
+        }
     }
 
     document.getElementById("content").style.opacity = 1;
@@ -97,7 +105,13 @@ const showBlogList = async (lang, opts = {}) => {
         attachPostClickHandler();
 
         if (!currentPost) {
-            document.getElementById("post-content").innerHTML = '';
+            const archiveKey = postKeyFor('all', lang);
+            if (POSTS[archiveKey]) {
+                document.getElementById("post-content").innerHTML = POSTS[archiveKey];
+                nextPost = archiveKey;
+            } else {
+                document.getElementById("post-content").innerHTML = '';
+            }
         } else {
             const counterpartKey = normalizePostKey(counterpartOf(currentPost, lang));
             if (counterpartKey) {
