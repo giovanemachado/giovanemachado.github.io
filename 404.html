@@ -7,16 +7,15 @@
     <link rel="stylesheet" href="/assets/build.css">
     <link rel="stylesheet" href="/assets/custom.css">
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-    <!-- shared lists data (also used by blog posts) -->
-    <script src="/posts/games.js"></script>
-    <script src="/posts/books.js"></script>
-    <script src="/posts/all.js"></script>
+    <!-- post data (posts/manifest.js lists the files; stuff/site.js loads them) -->
+    <script src="/posts/manifest.js"></script>
+    <script src="/stuff/site.js"></script>
     <script src="/stuff/sidebar.js"></script>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
     <title>404 - giovane machado</title>
 </head>
 
-<body onload="if('scrollRestoration' in history)history.scrollRestoration='manual';window.scrollTo(0,0);renderSidebar(localStorage.getItem('lang') || 'pt-br')">
+<body onload="if('scrollRestoration' in history)history.scrollRestoration='manual';window.scrollTo(0,0);ensureDataLoaded().then(() => renderSidebar(localStorage.getItem('lang') || 'pt-br'))">
     <div class="flex justify-center min-h-screen p-[2px] lg:p-[2px]">
         <div id="content"
             class="container max-w-[450px] lg:max-w-[750px] w-full mx-auto px-0 py-0 font-mono">
