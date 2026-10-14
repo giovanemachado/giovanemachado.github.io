@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="../assets/build.css">
     <link rel="stylesheet" href="../assets/custom.css">
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script src="../stuff/sidebar.js"></script>
     <script src="../stuff/blog.js"></script>
-    <script src="hello-pt.js"></script>
-    <script src="hello-en.js"></script>
+    <script src="games.js"></script>
+    <script src="books.js"></script>
+    <script src="all.js"></script>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
     <title>posts - giovane machado</title>
 </head>
@@ -17,7 +19,7 @@
 <body onload="firstLoadBlog()">
     <div class="flex justify-center min-h-screen p-[2px] lg:p-[2px]">
         <div id="content"
-            class="opacity-0 transition-opacity ease-in delay-150 duration-100 container max-w-[450px] w-full mx-auto px-0 py-0 font-mono">
+            class="opacity-0 transition-opacity ease-in delay-150 duration-100 container max-w-[450px] lg:max-w-[750px] w-full mx-auto px-0 py-0 font-mono">
           <div class="flex w-full justify-between mt-0 mb-2">
                 <a class="underline" href="../index.html"><h1 class="text-3xl font-bold ">giovane machado</h1></a>
                 <div class="flex flex-col">
@@ -29,13 +31,30 @@
                 <p>as coisas aparecem se você tem javascript habilitado / stuff show up if you have javascript enabled
                 </p>
             </noscript>
-            <div id="post-content"></div>
-            <br />
-            <div>
-                <span id="posts-label" class="font-bold">posts:</span>
-                <div id="posts-list"></div>
+            <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
+                <div class="flex-1 min-w-0">
+                    <div id="post-content"></div>
+                </div>
+                <aside id="sidebar-column" class="w-full lg:w-64 shrink-0 flex flex-col gap-4">
+                    <div class="border border-dashed border-neutral-400 p-3">
+                        <span id="contact-title" class="font-bold"></span>
+                        <div id="contact-list"></div>
+                    </div>
+                    <div class="border border-dashed border-neutral-400 p-3">
+                        <span id="blogs-title" class="font-bold"></span>
+                        <div id="blogs-list"></div>
+                    </div>
+                    <div class="border border-dashed border-neutral-400 p-3">
+                        <span id="games-title" class="font-bold"></span>
+                        <div id="games-list"></div>
+                    </div>
+                    <div class="border border-dashed border-neutral-400 p-3">
+                        <span id="books-title" class="font-bold"></span>
+                        <div id="books-list"></div>
+                    </div>
+                </aside>
             </div>
-            <footer class="mt-8 border-t border-dashed border-neutral-400 pt-3 pb-6 text-center text-sm">
+            <footer class="mt-8 pt-3 pb-6 text-center text-sm">
                 <p>à bientôt !</p>
             </footer>
         </div>

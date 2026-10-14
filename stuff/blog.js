@@ -5,14 +5,50 @@ const POSTS = {};
 
 const POSTS_META = [];
 
-const strings = {
-    'pt-br': {
-        postsLabel: 'posts:',
-    },
-    'en-us': {
-        postsLabel: 'posts:',
+let postsRegistered = false;
+
+const sortByStars = (list) => {
+    return [...list].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+};
+
+const renderArchiveBody = (data, lang) => {
+    const rows = [...(window.POSTS_DATA || [])]
+        .sort((a, b) => a.date < b.date ? 1 : -1)
+        .map((post) => {
+            const key = post.slug + (lang === englishTag ? '-en' : '-pt');
+            return `<li>* <a class="underline" href="/posts/blog.html?lang=${lang}&post=${key}">${post.title[lang]} (${post.date})</a></li>`;
+        }).join("\n        ");
+    return `<div>\n    <h2 class="text-xl font-bold">${data.title[lang]}</h2>\n    <p class="opacity-70">${data.date}</p>\n    <br />\n    <p>${data.intro[lang]}</p>\n    <br />\n    <ul>\n        ${rows}\n    </ul>\n</div>`;
+};
+
+const renderPostBody = (data, lang) => {
+    if (data.archive) return renderArchiveBody(data, lang);
+    const rows = sortByStars(data.items || []).map(([title, rating]) => {
+        const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
+        return `<li class="flex justify-between gap-2"><span>* ${title}</span><span class="whitespace-nowrap" title="${rating}/5">${stars}</span></li>`;
+    }).join("\n        ");
+    const list = rows ? `<br />\n    <ul>\n        ${rows}\n    </ul>` : '';
+    return `<div>\n    <h2 class="text-xl font-bold">${data.title[lang]}</h2>\n    <p class="opacity-70">${data.date}</p>\n    <br />\n    <p>${data.intro[lang]}</p>${list}\n</div>`;
+};
+
+const registerPost = (data) => {
+    for (const lang of [portugueseTag, englishTag]) {
+        const key = data.slug + (lang === englishTag ? '-en' : '-pt');
+        POSTS[key] = renderPostBody(data, lang);
+        POSTS_META.push({ key, lang, title: data.title[lang], date: data.date });
     }
-}
+};
+
+const ensurePostsRegistered = () => {
+    if (postsRegistered) return;
+    postsRegistered = true;
+    const seen = new Set();
+    (window.POSTS_DATA || []).forEach((data) => {
+        if (seen.has(data.slug)) return;
+        seen.add(data.slug);
+        registerPost(data);
+    });
+};
 
 const currentLang = () => localStorage.getItem("lang") || portugueseTag
 
@@ -34,18 +70,10 @@ const goNotFound = () => {
     window.location.href = '/404.html';
 }
 
-const renderPostsList = (lang) => {
-    return `<ul>` + POSTS_META
-        .filter((post) => post.lang === lang)
-        .sort((a, b) => a.date < b.date ? 1 : -1)
-        .map((post) => `<li>* <a class="underline" href="/posts/blog.html?lang=${lang}&post=${post.key}">${post.title} (${post.date})</a></li>`)
-        .join('') + `</ul>`;
-}
-
 const firstLoadBlog = async () => {
-    goNotFound();
-    return;
-
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+    ensurePostsRegistered();
     const params = new URLSearchParams(window.location.search);
     const lang = params.get("lang") || localStorage.getItem("lang") || portugueseTag;
     const post = params.get("post");
@@ -54,33 +82,33 @@ const firstLoadBlog = async () => {
 
     if (post) {
         await showPost(post, { updateUrl: false });
-    } else {
-        goNotFound();
-        return;
     }
 
     document.getElementById("content").style.opacity = 1;
 }
 
 const showBlogList = async (lang, opts = {}) => {
+    ensurePostsRegistered();
     localStorage.setItem("lang", lang);
 
     const currentPost = new URL(window.location).searchParams.get("post");
     let nextPost = null;
 
-    document.getElementById("posts-label").textContent = strings[lang].postsLabel;
-
     try {
-        document.getElementById("posts-list").innerHTML = renderPostsList(lang);
-        attachPostsClickHandler();
+        renderSidebar(lang);
+        attachBlogsClickHandler();
 
-        const counterpartKey = normalizePostKey(counterpartOf(currentPost, lang));
-        if (counterpartKey) {
-            document.getElementById("post-content").innerHTML = POSTS[counterpartKey];
-            nextPost = counterpartKey;
+        if (!currentPost) {
+            document.getElementById("post-content").innerHTML = '';
         } else {
-            goNotFound();
-            return;
+            const counterpartKey = normalizePostKey(counterpartOf(currentPost, lang));
+            if (counterpartKey) {
+                document.getElementById("post-content").innerHTML = POSTS[counterpartKey];
+                nextPost = counterpartKey;
+            } else {
+                goNotFound();
+                return;
+            }
         }
     } catch (error) {
         console.error('Erro ao carregar:', error);
@@ -89,6 +117,7 @@ const showBlogList = async (lang, opts = {}) => {
     }
 
     document.getElementById("content").style.opacity = 1;
+    window.scrollTo(0, 0);
 
     if (opts.updateUrl !== false) {
         const url = new URL(window.location);
@@ -103,6 +132,7 @@ const showBlogList = async (lang, opts = {}) => {
 }
 
 const showPost = async (key, opts = {}) => {
+    ensurePostsRegistered();
     const lang = currentLang();
 
     const postKey = normalizePostKey(key);
@@ -114,7 +144,7 @@ const showPost = async (key, opts = {}) => {
 
     try {
         document.getElementById("post-content").innerHTML = POSTS[postKey];
-        document.getElementById("post-content").scrollIntoView({ behavior: 'smooth', block: 'start' });
+        window.scrollTo(0, 0);
     } catch (error) {
         console.error('Erro ao carregar:', error);
         goNotFound();
@@ -129,7 +159,7 @@ const showPost = async (key, opts = {}) => {
     }
 }
 
-const handlePostsListClick = (event) => {
+const handleBlogsClick = (event) => {
     const anchor = event.target.closest('a[href*="post="]');
     if (!anchor) return;
     const url = new URL(anchor.getAttribute("href"), window.location.href);
@@ -139,8 +169,8 @@ const handlePostsListClick = (event) => {
     showPost(post);
 }
 
-const attachPostsClickHandler = () => {
-    const listEl = document.getElementById("posts-list");
+const attachBlogsClickHandler = () => {
+    const listEl = document.getElementById("blogs-list");
     if (!listEl) return;
-    listEl.onclick = handlePostsListClick;
+    listEl.onclick = handleBlogsClick;
 }

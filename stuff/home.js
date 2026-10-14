@@ -7,85 +7,6 @@ const STACK_HTML = `<ul>
     <li>* AI first development</li>
 </ul>`;
 
-const LINKS_HTML = `<ul>
-    <li>* <a class="underline" target="_blank" href="https://www.linkedin.com/in/giovanenolink">linkedin.com/in/giovanenolink</a></li>
-    <li>* <a class="underline" target="_blank" href="https://github.com/giovanemachado">github.com/giovanemachado</a></li>
-    <li>* <a class="underline" target="_blank" href="https://sangue1.itch.io">sangue1.itch.io</a></li>
-</ul>`;
-
-const GAMES_TITLE_PT = `jogos que já joguei:`;
-const GAMES_TITLE_EN = `games i've played:`;
-
-
-const GAMES = [
-    ["AOE4", 5],
-    ["LOL", 4],
-    ["rocket league", 5],
-    ["SC2", 2],
-    ["RE7", 3],
-    ["RE8", 1],
-    ["ryse son of rome", 1],
-    ["hollow knight", 3],
-    ["high on life", 5],
-    ["nfs most wanted 05", 5],
-    ["peak", 5],
-    ["guild wars 2", 3],
-    ["new wolrd", 2],
-    ["aoe3", 3],
-    ["cod 1", 5],
-    ["valorant", 2],
-    ["bf5", 2],
-    ["bf6", 3],
-    ["bf2042", 1],
-    ["dead space", 2],
-    ["cult of the lamb", 5],
-    ["sea of thieves", 3],
-    ["phasmophobia", 1],
-    ["pubg", 3],
-    ["rdr", 1],
-    ["gta v", 4],
-    ["gta sa", 4],
-    ["gta vc", 3],
-    ["the final station", 2],
-    ["the forest", 3],
-    ["hf2", 4],
-    ["heroes and generals", 2],
-    ["hellblade", 4],
-    ["hellblade 2", 3],
-    ["it takes two", 5],
-    ["l4d2", 3],
-    ["nfs u2", 3],
-    ["nfs unbound", 3],
-    ["sons of tf", 2],
-    ["tf2", 3],
-    ["the witcher 3", 5],
-    ["a way out", 3],
-    ["plague tale 1", 4],
-    ["plague tale 2", 4],
-    ["plague tale 3", 3],
-    ["chivarly 2", 3],
-    ["control", 5],
-    ["wolfstein new order", 2],
-    ["twd tell tale 1, 2, 3", 3],
-    ["balatro", 5],
-    ["herdling", 3]
-];
-
-const starsFor = (rating) => {
-    const clamped = Math.min(5, Math.max(1, rating));
-    return "★".repeat(clamped) + "☆".repeat(5 - clamped);
-};
-
-const renderGames = (lang) => {
-    document.getElementById("games-title").textContent = lang === englishTag ? GAMES_TITLE_EN : GAMES_TITLE_PT;
-
-    document.getElementById("games-list").innerHTML = `<ul>` + GAMES.map(([title, rating]) => {
-        const stars = starsFor(rating);
-        const ariaLabel = lang === englishTag ? `${rating} out of 5` : `${rating} de 5`;
-        return `<li class="flex justify-between gap-2"><span>* ${title}</span><span class="whitespace-nowrap" title="${rating}/5" aria-label="${title}: ${ariaLabel}">${stars}</span></li>`;
-    }).join("") + `</ul>`;
-};
-
 const HOME_PT = `<div>
     <p>eai 🤙, sou fullstack engineer desde 2019, gosto de passar tempo meu tempo livre com a minha família, ou jogando algo. vivo em uma cidade pequena de santa catarina - brasil, e trabalho remoto desde sempre.
     </p>
@@ -96,11 +17,6 @@ const HOME_PT = `<div>
     <div>
         <span class="font-bold">minha stack:</span>
         <div id="stack-list"></div>
-    </div>
-    <br />
-    <div>
-        <span class="font-bold">links para falar comigo/ver o meu trabalho:</span>
-        <div id="links-list"></div>
     </div>
 </div>`;
 
@@ -115,14 +31,11 @@ const HOME_EN = `<div>
         <span class="font-bold">my stack:</span>
         <div id="stack-list"></div>
     </div>
-    <br />
-    <div>
-        <span class="font-bold">links to contact me/see my work:</span>
-        <div id="links-list"></div>
-    </div>
 </div>`;
 
 const firstLoad = async () => {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
     const lang = localStorage.getItem("lang");
     getRandomDog()
 
@@ -177,10 +90,10 @@ const showContent = async (lang) => {
         document.getElementById("home-content").innerHTML = content;
 
         document.getElementById("stack-list").innerHTML = STACK_HTML;
-        document.getElementById("links-list").innerHTML = LINKS_HTML;
-        renderGames(lang);
+        renderSidebar(lang);
 
         document.getElementById("content").style.opacity = 1;
+        window.scrollTo(0, 0);
     } catch (error) {
         console.error('Erro ao carregar:', error);
         window.location.href = '/404.html';
