@@ -1,3 +1,26 @@
+const DOGS_BANNER_HTML = `<div id="tralha" style="display:none" class="aspect-video w-full overflow-hidden">
+    <img class="w-full h-full object-cover" src="assets/tralha.jpeg"
+        alt="um dos meus cachorrinhos / one of my dogs" />
+</div>
+<div id="treco" style="display:none" class="aspect-video w-full overflow-hidden">
+    <img class="w-full h-full object-cover" src="assets/treco.png"
+        alt="um dos meus cachorrinhos / one of my dogs" />
+</div>
+<div id="tirulico" style="display:none" class="aspect-video w-full overflow-hidden">
+    <img class="w-full h-full object-cover" src="assets/tirulico.png"
+        alt="um dos meus cachorrinhos / one of my dogs" />
+</div>`;
+
+const bootHome = () => {
+    renderShell({
+        homeHref: 'index.html',
+        langFn: 'showContent',
+        bannerHtml: DOGS_BANNER_HTML,
+        mainHtml: '<div id="home-content" class="flex-1 min-w-0"></div>',
+    });
+    return firstLoad();
+};
+
 const STACK_LIST_HTML = `<ul>
     <li>* typescript, react, sql, nosql, web, mobile </li>
     <li>* godot engine, cursor, claude code, open code</li>

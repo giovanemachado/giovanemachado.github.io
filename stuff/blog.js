@@ -2,6 +2,18 @@ const POSTS = {};
 
 let postsRegistered = false;
 
+const bootBlog = () => {
+    renderShell({
+        homeHref: '../index.html',
+        langFn: 'showBlogList',
+        bannerHtml: '',
+        mainHtml: `<div class="flex-1 min-w-0">
+            <div id="post-content"></div>
+        </div>`,
+    });
+    return firstLoadBlog();
+};
+
 const renderArchiveBody = (data, lang) => {
     const rows = getRecentPosts()
         .map((post) => {

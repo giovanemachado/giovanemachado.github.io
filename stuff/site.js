@@ -64,6 +64,62 @@ const STRINGS = {
 
 const t = (lang, key) => (STRINGS[lang] || STRINGS[window.portugueseTag])[key];
 
+// Shared page shell. Each HTML page keeps only a #shell mount point plus a
+// static <noscript>; header, sidebar boxes, and footer render from here.
+const SIDEBAR_BOXES = ['contact', 'blogs', 'games', 'books'];
+
+const shellSidebar = () => `<aside id="sidebar-column" class="w-full lg:w-64 shrink-0 flex flex-col gap-4">${SIDEBAR_BOXES.map((box) => `
+    <div class="border border-dashed border-neutral-400 p-3">
+        <span id="${box}-title" class="font-bold"></span>
+        <div id="${box}-list"></div>
+    </div>`).join('')}
+</aside>`;
+
+const shellHeader = (homeHref, langFn) => `<div class="flex w-full justify-between mt-0 mb-2">
+    <a class="underline" href="${homeHref}"><h1 class="text-3xl font-bold ">giovane machado</h1></a>${langFn ? `
+    <div class="flex flex-col">
+        <a class="underline" href="#" onclick="${langFn}('pt-br'); return false;">pt-br</a>
+        <a class="underline" href="#" onclick="${langFn}('en-us'); return false;">en-us</a>
+    </div>` : ''}
+</div>`;
+
+const renderShell = ({ homeHref, langFn, bannerHtml, mainHtml, visible }) => {
+    const contentClass = visible
+        ? 'container max-w-[450px] lg:max-w-[750px] w-full mx-auto px-0 py-0 font-mono'
+        : 'opacity-0 transition-opacity ease-in delay-150 duration-100 container max-w-[450px] lg:max-w-[750px] w-full mx-auto px-0 py-0 font-mono';
+    document.getElementById('shell').innerHTML = `<div id="content"
+        class="${contentClass}">
+        ${bannerHtml}
+        ${shellHeader(homeHref, langFn)}
+        <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            ${mainHtml}
+            ${shellSidebar()}
+        </div>
+        <footer class="mt-8 pt-3 pb-6 text-center text-sm">
+            <p>à bientôt !</p>
+        </footer>
+    </div>`;
+};
+
+const NOT_FOUND_HTML = `<div class="flex-1 min-w-0">
+    <h2 class="text-xl font-bold">404</h2>
+    <br />
+    <p>página não encontrada / page not found</p>
+    <br />
+    <div>
+        <ul>
+            <li>* <a class="underline" href="/">voltar para o início / back home</a></li>
+        </ul>
+    </div>
+</div>`;
+
+const bootNotFound = () => {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+    renderShell({ homeHref: '/', langFn: null, bannerHtml: '', mainHtml: NOT_FOUND_HTML, visible: true });
+    return ensureDataLoaded().then(() => renderSidebar(localStorage.getItem('lang') || window.portugueseTag));
+};
+
 // Loads every post file listed in posts/manifest.js (once). Resolves the
 // posts/ dir from the manifest <script> tag, so it works from any page.
 const loadedSlugs = new Set();
