@@ -7,27 +7,19 @@
     <link rel="stylesheet" href="/assets/build.css">
     <link rel="stylesheet" href="/assets/custom.css">
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- post data (posts/manifest.js lists the files; stuff/site.js loads them) -->
+    <script src="/posts/manifest.js"></script>
+    <script src="/stuff/site.js"></script>
+    <script src="/stuff/sidebar.js"></script>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
     <title>404 - giovane machado</title>
 </head>
 
-<body>
-    <div class="flex justify-center min-h-screen p-[2px] lg:p-[2px]">
-        <div class="container max-w-[450px] w-full mx-auto px-0 py-0 font-mono">
-            <div class="flex w-full justify-between mt-0 mb-2">
-                <a class="underline" href="/"><h1 class="text-3xl font-bold ">giovane machado</h1></a>
-            </div> 
-            <h2 class="text-xl font-bold">404</h2>
-            <br />
-            <p>página não encontrada / page not found</p>
-            <br />
-            <div>
-                <ul>
-                    <li>* <a class="underline" href="/">voltar para o início / back home</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+<body onload="bootNotFound()">
+    <div class="flex justify-center min-h-screen p-[2px] lg:p-[2px]" id="shell"></div>
+    <noscript>
+        <p class="font-mono">as coisas aparecem se você tem javascript habilitado / stuff show up if you have javascript enabled</p>
+    </noscript>
 </body>
 
 </html>

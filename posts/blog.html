@@ -7,39 +7,19 @@
     <link rel="stylesheet" href="../assets/build.css">
     <link rel="stylesheet" href="../assets/custom.css">
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script src="manifest.js"></script>
+    <script src="../stuff/site.js"></script>
+    <script src="../stuff/sidebar.js"></script>
     <script src="../stuff/blog.js"></script>
-    <script src="hello-pt.js"></script>
-    <script src="hello-en.js"></script>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
     <title>posts - giovane machado</title>
 </head>
 
-<body onload="firstLoadBlog()">
-    <div class="flex justify-center min-h-screen p-[2px] lg:p-[2px]">
-        <div id="content"
-            class="opacity-0 transition-opacity ease-in delay-150 duration-100 container max-w-[450px] w-full mx-auto px-0 py-0 font-mono">
-          <div class="flex w-full justify-between mt-0 mb-2">
-                <a class="underline" href="../index.html"><h1 class="text-3xl font-bold ">giovane machado</h1></a>
-                <div class="flex flex-col">
-                    <a class="underline" href="#" onclick="showBlogList('pt-br'); return false;">pt-br</a>
-                    <a class="underline" href="#" onclick="showBlogList('en-us'); return false;">en-us</a>
-                </div>
-            </div>
-            <noscript>
-                <p>as coisas aparecem se você tem javascript habilitado / stuff show up if you have javascript enabled
-                </p>
-            </noscript>
-            <div id="post-content"></div>
-            <br />
-            <div>
-                <span id="posts-label" class="font-bold">posts:</span>
-                <div id="posts-list"></div>
-            </div>
-            <footer class="mt-8 border-t border-dashed border-neutral-400 pt-3 pb-6 text-center text-sm">
-                <p>à bientôt !</p>
-            </footer>
-        </div>
-    </div>
+<body onload="bootBlog()">
+    <div class="flex justify-center min-h-screen p-[2px] lg:p-[2px]" id="shell"></div>
+    <noscript>
+        <p class="font-mono">as coisas aparecem se você tem javascript habilitado / stuff show up if you have javascript enabled</p>
+    </noscript>
 </body>
 
 </html>
