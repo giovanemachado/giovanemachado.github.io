@@ -57,6 +57,7 @@
         ["wolfstein new order", 2],
         ["twd tell tale 1, 2, 3", 3],
         ["balatro", 5],
-        ["herdling", 3]
+        ["herdling", 3],
+        ["r6 siege", 3],
     ]
 });

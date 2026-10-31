@@ -16,6 +16,7 @@
         ["homo deus", 2],
         ["sapiens", 5],
         ["sociedade do cansaço", 4],
-        ["phantastes", 2]
+        ["phantastes", 2],
+        ["a revolução dos bichos", 4],
     ]
 });
