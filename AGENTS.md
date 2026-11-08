@@ -12,7 +12,10 @@ Static personal site built with Astro and deployed to GitHub Pages. The build ou
   - `en/posts/index.astro` — en-us archive (`/en/posts/`).
   - `en/posts/[slug].astro` — en-us posts (`/en/posts/<slug>/`).
   - `404.astro` — static bilingual 404.
-- `src/data/posts.ts` — single source of truth for posts. `Post` shape: `slug`, `date`, `title`, `intro` (both languages), optional `body`, optional `items` (`[title, rating][]`), optional `archive: true`. Also exports `getItems`, `recentPosts`, `sortByStars`, `top5ByStars`, `archivePost`.
+- `src/content.config.ts` — Astro content collection `posts`, loaded from `src/content/posts/**/*.md`. Schema: `title` (string), `date` (string), `items` (`[title, rating][]`, optional).
+- `src/content/posts/<slug>/{pt,en}.md` — one Markdown file per post per language. `slug` and language are derived from the path (`games/pt.md` → slug `games`, lang `pt-br`). The Markdown body is the post content. `items` renders a star list below it.
+- `src/lib/posts.ts` — `postsFor(lang)`, `recentPostsFor(lang)`, `postPath()`, `archivePath()`, `topItems()`. No star sorting: `items` is displayed in file order and the sidebar takes the first 5.
+- `src/data/archive.ts` — title/intro/date copy for the generated archive pages.
 - `src/i18n.ts` — `Lang` (`'pt-br' | 'en-us'`), the `STRINGS` copy table, `t()`, `isEn()`, `otherLang()`.
 - `src/components/` — `BaseLayout.astro` (head, header, sidebar, footer), `Header.astro`, `Sidebar.astro`, `StarList.astro`, `PostView.astro`, `ArchiveContent.astro`, `HomeContent.astro`, `DogBanner.astro`.
 - `src/styles/global.css` — Tailwind directives + hand-editable body background. Never hand-edit generated CSS.

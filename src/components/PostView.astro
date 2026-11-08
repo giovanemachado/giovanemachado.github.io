@@ -1,31 +1,23 @@
 ---
 import type { Lang } from '../i18n';
-import type { Post } from '../data/posts';
-import { sortByStars } from '../data/posts';
 import StarList from './StarList.astro';
 
 interface Props {
-  post: Post;
+  title: string;
+  date: string;
+  items?: [string, number][];
   lang: Lang;
 }
 
-const { post, lang } = Astro.props;
-const bodyHtml = post.body?.[lang] ?? post.body?.['pt-br'] ?? '';
-const items = sortByStars(post.items ?? []);
+const { title, date, items, lang } = Astro.props;
 ---
 
 <div>
-    <h2 class="text-xl font-bold">{post.title[lang]}</h2>
-    <p class="opacity-70">{post.date}</p>
+    <h2 class="text-xl font-bold">{title}</h2>
+    <p class="opacity-70">{date}</p>
     <br />
-    <p>{post.intro[lang]}</p>
-    {bodyHtml && (
-        <>
-            <br />
-            <div set:html={bodyHtml} />
-        </>
-    )}
-    {items.length > 0 && (
+    <div class="post-body"><slot /></div>
+    {items && items.length > 0 && (
         <>
             <br />
             <StarList items={items} lang={lang} />

@@ -1,6 +1,6 @@
 ---
 import { t, type Lang } from '../i18n';
-import { getItems, recentPosts, top5ByStars } from '../data/posts';
+import { archivePath, postPath, postsFor, recentPostsFor, topItems } from '../lib/posts';
 import StarList from './StarList.astro';
 
 interface Props {
@@ -8,12 +8,11 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const postHref = (slug: string) => `${lang === 'en-us' ? '/en' : ''}/posts/${slug}/`;
-const archiveHref = `${lang === 'en-us' ? '/en' : ''}/posts/`;
+const recent = (await recentPostsFor(lang)).slice(0, 5);
+const all = await postsFor(lang);
+const games = topItems(all.find((post) => post.slug === 'games')?.entry.data.items);
+const books = topItems(all.find((post) => post.slug === 'books')?.entry.data.items);
 const more = t(lang, 'more');
-const recent = recentPosts.filter((post) => !post.archive).slice(0, 5);
-const games = top5ByStars(getItems('games'));
-const books = top5ByStars(getItems('books'));
 ---
 
 <aside id="sidebar-column" class="w-full lg:w-64 shrink-0 flex flex-col gap-4">
@@ -33,9 +32,9 @@ const books = top5ByStars(getItems('books'));
         <div>
             <ul>
                 {recent.map((post) => (
-                    <li>* <a class="underline" href={postHref(post.slug)}>{post.title[lang]}</a></li>
+                    <li>* <a class="underline" href={postPath(lang, post.slug)}>{post.entry.data.title}</a></li>
                 ))}
-                <li>* <a class="underline" href={archiveHref}>{more}</a></li>
+                <li>* <a class="underline" href={archivePath(lang)}>{more}</a></li>
             </ul>
         </div>
     </div>
@@ -43,14 +42,14 @@ const books = top5ByStars(getItems('books'));
     <div class="border border-dashed border-neutral-400 p-3">
         <span class="font-bold">{t(lang, 'games')}</span>
         <div>
-            <StarList items={games} lang={lang} moreHref={postHref('games')} moreLabel={more} />
+            <StarList items={games} lang={lang} moreHref={postPath(lang, 'games')} moreLabel={more} />
         </div>
     </div>
 
     <div class="border border-dashed border-neutral-400 p-3">
         <span class="font-bold">{t(lang, 'books')}</span>
         <div>
-            <StarList items={books} lang={lang} moreHref={postHref('books')} moreLabel={more} />
+            <StarList items={books} lang={lang} moreHref={postPath(lang, 'books')} moreLabel={more} />
         </div>
     </div>
 </aside>

@@ -1,23 +1,29 @@
 ---
 import BaseLayout from '../../components/BaseLayout.astro';
 import PostView from '../../components/PostView.astro';
-import { posts, type Post } from '../../data/posts';
+import { render, type CollectionEntry } from 'astro:content';
+import { postsFor } from '../../lib/posts';
 import type { Lang } from '../../i18n';
 
-export function getStaticPaths() {
-    return posts
-        .filter((post) => !post.archive)
-        .map((post) => ({ params: { slug: post.slug }, props: { post } }));
+export async function getStaticPaths() {
+    return (await postsFor('pt-br')).map(({ slug, entry }) => ({
+        params: { slug },
+        props: { entry },
+    }));
 }
 
 interface Props {
-    post: Post;
+    entry: CollectionEntry<'posts'>;
 }
 
 const lang: Lang = 'pt-br';
-const { post } = Astro.props;
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const slug = entry.id.split('/')[0];
 ---
 
-<BaseLayout lang={lang} title={`${post.title[lang]} - giovane machado`} altHref={`/en/posts/${post.slug}/`}>
-    <PostView post={post} lang={lang} />
+<BaseLayout lang={lang} title={`${entry.data.title} - giovane machado`} altHref={`/en/posts/${slug}/`}>
+    <PostView title={entry.data.title} date={entry.data.date} items={entry.data.items} lang={lang}>
+        <Content />
+    </PostView>
 </BaseLayout>

@@ -1,5 +1,6 @@
 ---
-import { archivePost, recentPosts } from '../data/posts';
+import { archive } from '../data/archive';
+import { postPath, recentPostsFor } from '../lib/posts';
 import type { Lang } from '../i18n';
 
 interface Props {
@@ -7,9 +8,7 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const archive = archivePost();
-const rows = recentPosts.filter((post) => !post.archive);
-const postHref = (slug: string) => `${lang === 'en-us' ? '/en' : ''}/posts/${slug}/`;
+const rows = await recentPostsFor(lang);
 ---
 
 <div>
@@ -20,7 +19,7 @@ const postHref = (slug: string) => `${lang === 'en-us' ? '/en' : ''}/posts/${slu
     <br />
     <ul>
         {rows.map((post) => (
-            <li>* <a class="underline" href={postHref(post.slug)}>{post.title[lang]} ({post.date})</a></li>
+            <li>* <a class="underline" href={postPath(lang, post.slug)}>{post.entry.data.title} ({post.entry.data.date})</a></li>
         ))}
     </ul>
 </div>

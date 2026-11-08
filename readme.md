@@ -18,22 +18,40 @@ Static personal site built with Astro and deployed to GitHub Pages. The build ou
 
 The home pages have no posts list in the main column — posts live in the sidebar `blogs` box. The sidebar shows the 5 most recent posts and links to the archive. Portuguese lives at `/posts/` and English at `/en/posts/`.
 
-- Each post is one entry in `src/data/posts.ts`:
-  - `slug`, `date`
-  - `title`, `intro` — one value per language (`'pt-br'`, `'en-us'`)
-  - `items` — optional list of `[title, rating]` pairs, sorted by rating at build time
-  - `body` — optional raw HTML per language, rendered between the intro and the star list
-  - `archive: true` — marks the archive post (rendered at `/posts/` and `/en/posts/` instead of a slug page)
-- Games and books are the lists shared with the home sidebar. Edit them in `src/data/posts.ts`.
+Each post is a folder under `src/content/posts/<slug>/` with two Markdown files, one per language:
+
+```
+src/content/posts/my-post/
+  pt.md
+  en.md
+```
+
+Frontmatter:
+
+```md
+---
+title: meu post
+date: "2026-11-08"
+items:
+  - ["some game", 5]
+---
+
+Text of the post in Markdown.
+```
+
+- `title`, `date` are required.
+- `items` is optional. It renders the star list below the Markdown body. **Items are shown in file order** — there is no automatic sorting. The sidebar shows the first 5 items, so put your highest-rated entries first.
+- `slug` and language come from the path: `my-post/pt.md` → `/posts/my-post/`, `my-post/en.md` → `/en/posts/my-post/`.
+- Games and books are regular posts: `src/content/posts/games/` and `src/content/posts/books/`.
 
 #### add a new blog post
 
-1. Duplicate an existing entry in `src/data/posts.ts` and update `slug`, `date`, `title`, `intro`, and optionally `items` / `body`.
-2. Build (`npm run build`) or run `npm run dev`. Astro generates `/posts/<slug>/` and `/en/posts/<slug>/` automatically — no HTML or manifest edits.
+1. Create `src/content/posts/<slug>/pt.md` and `src/content/posts/<slug>/en.md` with the frontmatter and Markdown body.
+2. Build (`npm run build`) or run `npm run dev`. Astro generates both language routes automatically.
 
 #### delete a blog post
 
-1. Remove its entry from `src/data/posts.ts`.
+1. Delete the `src/content/posts/<slug>/` folder.
 2. Its generated routes disappear on the next build.
 
 #### disable the blog
