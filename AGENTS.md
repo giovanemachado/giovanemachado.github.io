@@ -1,22 +1,70 @@
 # AGENTS.md
 
-Static personal site served via GitHub Pages. No package.json, tests, lint, or CI in repo. Merge to `main` deploys.
+Static personal site built with Astro and deployed to GitHub Pages. The build output is plain HTML/CSS in `dist/`. There are no tests or lint scripts; `astro build` is the verification step.
 
 ## Structure
-- `index.html` — mount point (`#shell`) + `bootHome()`. Loads `assets/build.css`, `assets/custom.css`, `posts/manifest.js` + `stuff/site.js` (auto-loads post data), `stuff/home.js`. (No fragment files, so no direct fragment URLs exist.)
-- `stuff/site.js` — shared foundation: lang tags, `STRINGS` copy table, sort/star/post helpers, manifest loader (`ensureDataLoaded`), and the shared page shell (`renderShell()` + `bootNotFound()`). Page chrome (header, 4 sidebar boxes, footer) lives here once — edit layout here, not in the HTML files.
-- `stuff/home.js` — home markup lives here as `homeTemplate()` rendered by `showContent()`. All UI copy for both languages lives in the `STRINGS` table in `stuff/site.js`. `firstLoad()` defaults to `pt-br`, persists `lang` + `dogCounter` in localStorage, rotates 3 dog imgs from `assets/`.
-- `stuff/sidebar.js` — shared sidebar renders used by both pages (`renderContact`, `renderBlogsBox` top-5 recent + archive link, `renderStarList` top-5 by stars backing `renderGames`/`renderBooks`, `renderSidebar` calling all four). Sidebar boxes (contact/blogs/games/books) exist with the same IDs on `index.html` and `posts/blog.html`.
-- `posts/blog.html` — mount point (`#shell`) + `bootBlog()`. Loads `manifest.js`, `stuff/site.js`, `stuff/sidebar.js`, `stuff/blog.js` (post files auto-load from the manifest; no per-post `<script>` tags). No main-column post list (sidebar covers it).
-- `posts/*.js` — one JS file per post (`posts/<slug>.js`). Each pushes `{ slug, date, title, intro, body?, items? }` to `window.POSTS_DATA` (`items` is an array of arrays, `title`/`intro`/`body` are `{ 'pt-br', 'en-us' }`; `body` is raw HTML rendered verbatim between `intro` and the star list, omit it for list-only posts). A post with `archive: true` (see `posts/all.js`) renders a complete newest-first link list of all posts instead of body/star rows. `stuff/blog.js` generates both `POSTS['<slug>-pt']` / `POSTS['<slug>-en']` bodies from it. Keep the `-pt` / `-en` key suffixes: `counterpartOf` depends on them. Lists shared with home (games/books) are the single source of truth — edit them in the post file, not in `home.js`.
-- `stuff/blog.js` — blog logic only (`POSTS` registry, `registerPost()`/`renderPostBody()`/`renderArchiveBody()`, `firstLoadBlog()`, `showBlogList()` (renders post + shared sidebar), `showPost()`, blogs-box click interception). No post bodies live here.
-- `assets/` — all images (`tralha.jpeg`, `treco.png`, `tirulico.png`, `favicon.png`) and CSS. `assets/custom.css` is the only hand-editable CSS (body bg). `assets/build.css` is generated, never hand-edit.
-- `tailwind.config.js` content: `./*.html`, `./posts/**/*.{html,js}`, `./stuff/*.js` (JS included because markup is inlined in JS).
 
-## Tailwind workflow (non-obvious, from readme.md)
-- Dev: uncomment `<!-- <script src="https://cdn.tailwindcss.com"></script> -->` in `index.html` for live classes.
-- Ship: comment the CDN line back out, then rebuild: `npx tailwindcss@3.4.18 -o assets/build.css --minify` (pinned: `main` was built with 3.4.18; unpinned `npx tailwindcss` regressed it to 3.4.13 once)
-- `index.html` CDN is currently commented out (ship state) — keep it that way when merging to `main`.
+- `src/pages/` — all routes. Every page is pre-rendered.
+  - `index.astro` — pt-BR home (`/`).
+  - `en/index.astro` — en-us home (`/en/`).
+  - `posts/index.astro` — pt-BR archive (`/posts/`).
+  - `posts/[slug].astro` — pt-BR posts (`/posts/<slug>/`).
+  - `en/posts/index.astro` — en-us archive (`/en/posts/`).
+  - `en/posts/[slug].astro` — en-us posts (`/en/posts/<slug>/`).
+  - `404.astro` — static bilingual 404.
+- `src/data/posts.ts` — single source of truth for posts. `Post` shape: `slug`, `date`, `title`, `intro` (both languages), optional `body`, optional `items` (`[title, rating][]`), optional `archive: true`. Also exports `getItems`, `recentPosts`, `sortByStars`, `top5ByStars`, `archivePost`.
+- `src/i18n.ts` — `Lang` (`'pt-br' | 'en-us'`), the `STRINGS` copy table, `t()`, `isEn()`, `otherLang()`.
+- `src/components/` — `BaseLayout.astro` (head, header, sidebar, footer), `Header.astro`, `Sidebar.astro`, `StarList.astro`, `PostView.astro`, `ArchiveContent.astro`, `HomeContent.astro`, `DogBanner.astro`.
+- `src/styles/global.css` — Tailwind directives + hand-editable body background. Never hand-edit generated CSS.
+- `public/assets/` — images served at `/assets/...`.
+- `.github/workflows/deploy.yml` — builds and deploys `dist/` to GitHub Pages on push to `main`.
 
-## Verify (no test suite)
-- `fetch()` fails on `file://`; serve over http: `python3 -m http.server` then check both `pt-br`/`en-us` toggles and dog-image rotation.
+## Routing and languages
+
+- `/` is the Portuguese home. English is reached only by clicking `en-us` or sharing an `/en/` URL. There is no `/pt/` and no redirect page.
+- Language links point to the counterpart route of the current page (e.g. `/posts/games/` ↔ `/en/posts/games/`).
+- `hreflang` alternate links are emitted in `BaseLayout.astro`.
+- Old `posts/blog.html?lang=…&post=…` URLs are gone and fall through to `404.html`.
+
+## Client JavaScript
+
+- The only shipped JS is the inline `is:inline` script in `DogBanner.astro`, used on the two home pages to rotate the dog image via `localStorage.dogCounter`.
+- No Astro islands, no framework integration, no hydrating components. Keep it that way unless the user explicitly asks.
+
+## Tailwind
+
+- Pinned to `3.4.18` via `postcss.config.cjs` + `tailwind.config.cjs`.
+- Config content scans `./src/**/*.{astro,html,js,ts,jsx,tsx,md}`.
+- Classes must be literal strings in `.astro` files so Tailwind can detect them.
+
+## Common tasks
+
+### Add a post
+
+1. Add an entry to `src/data/posts.ts` with both languages.
+2. Astro generates `/posts/<slug>/` and `/en/posts/<slug>/` automatically.
+
+### Delete a post
+
+Remove the entry from `src/data/posts.ts`; its routes disappear on the next build.
+
+### Disable the blog
+
+1. Remove the `blogs` box from `src/components/Sidebar.astro`.
+2. Remove `src/pages/posts/` and `src/pages/en/posts/`.
+3. Rebuild and check both languages.
+
+## Verify
+
+```sh
+npm install
+npm run build
+python3 -m http.server -d dist
+```
+
+Check `/`, `/en/`, `/posts/`, `/en/posts/`, one post in each language, both language toggles, and the dog rotation across reloads. `find dist -name '*.js'` should return nothing (the dog script is inline).
+
+## Notes
+
+- Assets use absolute `/assets/...` paths; this repo is the `giovanemachado.github.io` user site, so the base path is `/`.
+- `hooks/pre-push` blocks direct pushes to `main`; feature branch + PR is required.

@@ -2,38 +2,63 @@
 
 <li><a href="https://giovanemachado.github.io/">giovanemachado.github.io</a></li>
 
+Static personal site built with Astro. The build output is plain HTML/CSS in `dist/` and is deployed to GitHub Pages.
+
 ### utils
-- you can run the server with anything (it is just html and js), for example: `python3 -m http.server`, which will make it work on localhost:8000
-- autodeploy on merge with main (see actions)
-- uncomment `<!-- <script src="https://cdn.tailwindcss.com"></script> -->` for dev
-- run `npx tailwindcss@3.4.18 -o assets/build.css --minify` to build tailwind css (pinned version)
 
-### blog posts (enabled)
+- `npm install` — install dependencies.
+- `npm run dev` — local dev server with hot reload.
+- `npm run build` — generate the static site into `dist/`.
+- `npm run preview` — serve the built `dist/` locally.
+- You can also serve a build with anything, for example `python3 -m http.server` inside `dist/`.
+- Tailwind is pinned to `3.4.18` and runs as a PostCSS plugin during the Astro build. There is no CDN script and no separate CSS build step.
+- Autodeploy on merge with `main` via GitHub Actions (`.github/workflows/deploy.yml`). After the first deploy, set **Settings → Pages → Source: GitHub Actions** once.
 
-home has no posts list in the main column — posts live only in the sidebar `blogs` box, and `posts/blog.html` renders them. direct urls like `/posts/blog.html?lang=pt-br&post=games-pt` work; bare `posts/blog.html` shows the `all` archive post. when `lang=` and the post suffix disagree, the post suffix wins (page shows that language and syncs `lang=` to it).
+### structure
 
-how it works:
-- home section lives as `homeTemplate()` in `stuff/home.js` (rendered into `#home-content` by `showContent()` — no `fetch()`, no fragment files; copy lives in the `STRINGS` table in `stuff/site.js`). the sidebar (`#sidebar-column`, shared with `posts/blog.html` via `stuff/sidebar.js`) holds contact/blogs/games/books boxes: blogs shows the 5 most recent post titles + archive link, games + books show top 5 by stars (`top5ByStars`) with a `ver lista completa / see full list` link to their post.
-- each post lives in a single file in `posts/`: `posts/<slug>.js` pushes `{ slug, date, title, intro, body?, items? }` to `window.POSTS_DATA` (`items` is an array of arrays, `title`/`intro`/`body` hold both languages; `body` is raw HTML rendered verbatim between `intro` and the star list). a post with `archive: true` (see `posts/all.js`) renders a complete newest-first link list of all posts instead of body/star rows. `stuff/blog.js` generates both `POSTS['<slug>-pt']` / `POSTS['<slug>-en']` bodies from it. lists shared with home (games/books) live in their post file and are also loaded by `index.html`.
-- post pages are rendered by `firstLoadBlog()` in `stuff/blog.js` via `posts/blog.html`, which loads `manifest.js` (post file list) plus `../stuff/site.js` / `../stuff/sidebar.js` / `../stuff/blog.js`. `ensureDataLoaded()` in `stuff/site.js` fetches the listed post files, so neither page needs one `<script>` tag per post.
-- note: there are no fragment files, so direct urls like `/posts/games.html` don't exist and fall through to `/404.html`. only the `blog.html` entry point redirects via JS.
+- `src/pages/` — routes. Astro pre-renders every page at build time.
+  - `/` — pt-BR home.
+  - `/en/` — en-us home.
+  - `/posts/` — pt-BR blog archive.
+  - `/posts/<slug>/` — pt-BR posts.
+  - `/en/posts/` — en-us blog archive.
+  - `/en/posts/<slug>/` — en-us posts.
+  - `/404.html` — static bilingual 404.
+- `src/data/posts.ts` — the single source of truth for posts (games, books, archive). Each post holds both languages.
+- `src/i18n.ts` — UI copy (`STRINGS`) and the `Lang` type.
+- `src/components/` — `BaseLayout` (head, header, sidebar, footer), `Header`, `Sidebar`, `StarList`, `PostView`, `ArchiveContent`, `HomeContent`, `DogBanner`.
+- `src/styles/global.css` — Tailwind directives plus the hand-editable body background.
+- `public/assets/` — images, served at `/assets/...`.
 
-#### disable the blog
+The only client-side JavaScript is the small inline script in `DogBanner.astro` that rotates the dogs on the home pages. Everything else is static HTML. There are no Astro islands or framework runtimes.
 
-1. `stuff/sidebar.js` (`renderSidebar`): drop the `renderBlogsBox(lang)` call.
-2. `stuff/blog.js` (`firstLoadBlog`): add `goNotFound(); return;` at the top.
-3. serve with `python3 -m http.server` and check both `pt-br`/`en-us` toggles still work and post urls redirect to `/404.html`.
+### blog posts
+
+The home pages have no posts list in the main column — posts live in the sidebar `blogs` box. The sidebar shows the 5 most recent posts and links to the archive.
+
+- Each post is one entry in `src/data/posts.ts`:
+  - `slug`, `date`
+  - `title`, `intro` — one value per language (`'pt-br'`, `'en-us'`)
+  - `items` — optional list of `[title, rating]` pairs, sorted by rating at build time
+  - `body` — optional raw HTML per language, rendered between the intro and the star list
+  - `archive: true` — marks the archive post (rendered at `/posts/` and `/en/posts/` instead of a slug page)
+- Games and books are the lists shared with the home sidebar. Edit them in `src/data/posts.ts`, not in a component.
 
 #### add a new blog post
 
-1. duplicate `posts/games.js` to `posts/<slug>.js`. update `slug`, `date`, `title`/`intro` (both languages), and `items` (array of arrays, omit or leave empty for a text-only post; add `body: { 'pt-br': '<p>...', 'en-us': '<p>...' }` with raw HTML for essay-style posts, rendered between `intro` and the list; set `archive: true` instead for a full posts index like `posts/all.js`). the `-pt` / `-en` post keys are generated from the slug: language switching (`counterpartOf`) depends on the slug staying the same in both.
-2. list it — append `'<slug>'` to `window.POSTS_FILES` in `posts/manifest.js`. no HTML edits needed (`stuff/site.js` loads the files automatically, resolving `posts/` from the manifest tag).
-3. serve with `python3 -m http.server` and check the new entry appears in both languages and opens via `blog.html`.
+1. Duplicate an existing entry in `src/data/posts.ts` and update `slug`, `date`, `title`, `intro`, and optionally `items` / `body`.
+2. Build (`npm run build`) or run `npm run dev`. Astro generates `/posts/<slug>/` and `/en/posts/<slug>/` automatically — no HTML or manifest edits.
 
 #### delete a blog post
 
-1. remove its entry from `window.POSTS_FILES` in `posts/manifest.js`.
-2. delete its file (`posts/<slug>.js`). old `blog.html?post=<slug>-*` urls then redirect to `/404.html`.
+1. Remove its entry from `src/data/posts.ts`.
+2. Its generated routes disappear on the next build.
+
+#### disable the blog
+
+1. Remove the `blogs` box from `src/components/Sidebar.astro`.
+2. Remove `src/pages/posts/` and `src/pages/en/posts/`.
+3. Rebuild and check both languages.
 
 ### protect main — local pre-push hook
 

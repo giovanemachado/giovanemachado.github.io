@@ -1,0 +1,26 @@
+---
+import { t, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<div>
+    <p>{t(lang, 'homeP1')}</p>
+    <br />
+    <p>{t(lang, 'homeP2')}</p>
+    <br />
+    <div>
+        <span class="font-bold">{t(lang, 'stack')}</span>
+        <div>
+            <ul>
+                <li>* typescript, react, sql, nosql, web, mobile </li>
+                <li>* godot engine, cursor, claude code, open code</li>
+                <li>* AI first development</li>
+            </ul>
+        </div>
+    </div>
+</div>

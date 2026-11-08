@@ -1,0 +1,56 @@
+---
+import { t, type Lang } from '../i18n';
+import { getItems, recentPosts, top5ByStars } from '../data/posts';
+import StarList from './StarList.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const postHref = (slug: string) => `${lang === 'en-us' ? '/en' : ''}/posts/${slug}/`;
+const archiveHref = `${lang === 'en-us' ? '/en' : ''}/posts/`;
+const more = t(lang, 'more');
+const recent = recentPosts.filter((post) => !post.archive).slice(0, 5);
+const games = top5ByStars(getItems('games'));
+const books = top5ByStars(getItems('books'));
+---
+
+<aside id="sidebar-column" class="w-full lg:w-64 shrink-0 flex flex-col gap-4">
+    <div class="border border-dashed border-neutral-400 p-3">
+        <span class="font-bold">{t(lang, 'contact')}</span>
+        <div>
+            <ul>
+                <li>* <a class="underline" target="_blank" href="https://www.linkedin.com/in/giovanenolink">linkedin</a></li>
+                <li>* <a class="underline" target="_blank" href="https://github.com/giovanemachado">github</a></li>
+                <li>* <a class="underline" target="_blank" href="https://sangue1.itch.io">itch</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="border border-dashed border-neutral-400 p-3">
+        <span class="font-bold">{t(lang, 'blogs')}</span>
+        <div>
+            <ul>
+                {recent.map((post) => (
+                    <li>* <a class="underline" href={postHref(post.slug)}>{post.title[lang]}</a></li>
+                ))}
+                <li>* <a class="underline" href={archiveHref}>{more}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="border border-dashed border-neutral-400 p-3">
+        <span class="font-bold">{t(lang, 'games')}</span>
+        <div>
+            <StarList items={games} lang={lang} moreHref={postHref('games')} moreLabel={more} />
+        </div>
+    </div>
+
+    <div class="border border-dashed border-neutral-400 p-3">
+        <span class="font-bold">{t(lang, 'books')}</span>
+        <div>
+            <StarList items={books} lang={lang} moreHref={postHref('books')} moreLabel={more} />
+        </div>
+    </div>
+</aside>

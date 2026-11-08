@@ -1,0 +1,49 @@
+---
+import '../styles/global.css';
+import Header from './Header.astro';
+import Sidebar from './Sidebar.astro';
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  altHref: string;
+}
+
+const { lang, title, altHref } = Astro.props;
+const htmlLang = lang === 'en-us' ? 'en-US' : 'pt-BR';
+const altLang = lang === 'en-us' ? 'pt-BR' : 'en-US';
+const currentPath = Astro.url.pathname;
+const ptHref = lang === 'pt-br' ? currentPath : altHref;
+const enHref = lang === 'en-us' ? currentPath : altHref;
+---
+
+<!DOCTYPE html>
+<html lang={htmlLang}>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.png" />
+        <link rel="alternate" hreflang={htmlLang} href={currentPath} />
+        <link rel="alternate" hreflang={altLang} href={altHref} />
+        <title>{title}</title>
+    </head>
+
+    <body>
+        <div class="flex justify-center min-h-screen p-[2px] lg:p-[2px]">
+            <div id="content" class="container max-w-[450px] lg:max-w-[750px] w-full mx-auto px-0 py-0 font-mono">
+                <slot name="banner" />
+                <Header lang={lang} ptHref={ptHref} enHref={enHref} />
+                <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
+                    <main class="flex-1 min-w-0">
+                        <slot />
+                    </main>
+                    <Sidebar lang={lang} />
+                </div>
+                <footer class="mt-8 pt-3 pb-6 text-center text-sm">
+                    <p>à bientôt !</p>
+                </footer>
+            </div>
+        </div>
+    </body>
+</html>
