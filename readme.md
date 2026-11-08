@@ -2,7 +2,7 @@
 
 <li><a href="https://giovanemachado.github.io/">giovanemachado.github.io</a></li>
 
-Static personal site built with Astro. The build output is plain HTML/CSS in `dist/` and is deployed to GitHub Pages.
+Static personal site built with Astro and deployed to GitHub Pages. The build output is plain HTML/CSS in `dist/`.
 
 ### utils
 
@@ -11,30 +11,12 @@ Static personal site built with Astro. The build output is plain HTML/CSS in `di
 - `npm run build` — generate the static site into `dist/`.
 - `npm run preview` — serve the built `dist/` locally.
 - You can also serve a build with anything, for example `python3 -m http.server` inside `dist/`.
-- Tailwind is pinned to `3.4.18` and runs as a PostCSS plugin during the Astro build. There is no CDN script and no separate CSS build step.
+- Tailwind is pinned to `3.4.18` and runs during the Astro build. There is no CDN script and no separate CSS build step.
 - Autodeploy on merge with `main` via GitHub Actions (`.github/workflows/deploy.yml`). After the first deploy, set **Settings → Pages → Source: GitHub Actions** once.
 
-### structure
+### blog
 
-- `src/pages/` — routes. Astro pre-renders every page at build time.
-  - `/` — pt-BR home.
-  - `/en/` — en-us home.
-  - `/posts/` — pt-BR blog archive.
-  - `/posts/<slug>/` — pt-BR posts.
-  - `/en/posts/` — en-us blog archive.
-  - `/en/posts/<slug>/` — en-us posts.
-  - `/404.html` — static bilingual 404.
-- `src/data/posts.ts` — the single source of truth for posts (games, books, archive). Each post holds both languages.
-- `src/i18n.ts` — UI copy (`STRINGS`) and the `Lang` type.
-- `src/components/` — `BaseLayout` (head, header, sidebar, footer), `Header`, `Sidebar`, `StarList`, `PostView`, `ArchiveContent`, `HomeContent`, `DogBanner`.
-- `src/styles/global.css` — Tailwind directives plus the hand-editable body background.
-- `public/assets/` — images, served at `/assets/...`.
-
-The only client-side JavaScript is the small inline script in `DogBanner.astro` that rotates the dogs on the home pages. Everything else is static HTML. There are no Astro islands or framework runtimes.
-
-### blog posts
-
-The home pages have no posts list in the main column — posts live in the sidebar `blogs` box. The sidebar shows the 5 most recent posts and links to the archive.
+The home pages have no posts list in the main column — posts live in the sidebar `blogs` box. The sidebar shows the 5 most recent posts and links to the archive. Portuguese lives at `/posts/` and English at `/en/posts/`.
 
 - Each post is one entry in `src/data/posts.ts`:
   - `slug`, `date`
@@ -42,7 +24,7 @@ The home pages have no posts list in the main column — posts live in the sideb
   - `items` — optional list of `[title, rating]` pairs, sorted by rating at build time
   - `body` — optional raw HTML per language, rendered between the intro and the star list
   - `archive: true` — marks the archive post (rendered at `/posts/` and `/en/posts/` instead of a slug page)
-- Games and books are the lists shared with the home sidebar. Edit them in `src/data/posts.ts`, not in a component.
+- Games and books are the lists shared with the home sidebar. Edit them in `src/data/posts.ts`.
 
 #### add a new blog post
 

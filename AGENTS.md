@@ -37,22 +37,9 @@ Static personal site built with Astro and deployed to GitHub Pages. The build ou
 - Config content scans `./src/**/*.{astro,html,js,ts,jsx,tsx,md}`.
 - Classes must be literal strings in `.astro` files so Tailwind can detect them.
 
-## Common tasks
+## Daily usage
 
-### Add a post
-
-1. Add an entry to `src/data/posts.ts` with both languages.
-2. Astro generates `/posts/<slug>/` and `/en/posts/<slug>/` automatically.
-
-### Delete a post
-
-Remove the entry from `src/data/posts.ts`; its routes disappear on the next build.
-
-### Disable the blog
-
-1. Remove the `blogs` box from `src/components/Sidebar.astro`.
-2. Remove `src/pages/posts/` and `src/pages/en/posts/`.
-3. Rebuild and check both languages.
+Dev commands, post authoring, blog removal, and deploy steps live in `readme.md`. Keep that file focused on usage; structural and architecture details belong here.
 
 ## Verify
 
