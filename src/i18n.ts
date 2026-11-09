@@ -7,6 +7,7 @@ const STRINGS: Record<Lang, Record<string, string>> = {
   'pt-br': {
     contact: `contato:`,
     blogs: `blogs:`,
+    myGames: `meus jogos:`,
     games: `jogos que já joguei:`,
     books: `livros que já li:`,
     more: `ver lista completa`,
@@ -17,6 +18,7 @@ const STRINGS: Record<Lang, Record<string, string>> = {
   'en-us': {
     contact: `contact:`,
     blogs: `blogs:`,
+    myGames: `my games:`,
     games: `games i've played:`,
     books: `books i've read:`,
     more: `see full list`,

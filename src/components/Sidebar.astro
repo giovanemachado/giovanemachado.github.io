@@ -1,6 +1,6 @@
 ---
 import { t, type Lang } from '../i18n';
-import { archivePath, postPath, postsFor, recentPostsFor, topItems } from '../lib/posts';
+import { archivePath, gamesArchivePath, postPath, postsFor, recentGamesFor, recentPostsFor, topItems } from '../lib/posts';
 import StarList from './StarList.astro';
 
 interface Props {
@@ -9,8 +9,9 @@ interface Props {
 
 const { lang } = Astro.props;
 const recent = (await recentPostsFor(lang)).slice(0, 5);
+const myGames = (await recentGamesFor(lang)).slice(0, 5);
 const all = await postsFor(lang);
-const games = topItems(all.find((post) => post.slug === 'games')?.entry.data.items);
+const playedGames = topItems(all.find((post) => post.slug === 'games-i-ve-played')?.entry.data.items);
 const books = topItems(all.find((post) => post.slug === 'books')?.entry.data.items);
 const more = t(lang, 'more');
 ---
@@ -39,10 +40,24 @@ const more = t(lang, 'more');
         </div>
     </div>
 
+    {myGames.length > 0 && (
+        <div class="border border-dashed border-neutral-400 p-3">
+            <span class="font-bold">{t(lang, 'myGames')}</span>
+            <div>
+                <ul>
+                    {myGames.map((game) => (
+                        <li>* <a class="underline" href={postPath(lang, game.slug)}>{game.entry.data.title}</a></li>
+                    ))}
+                    <li>* <a class="underline" href={gamesArchivePath(lang)}>{more}</a></li>
+                </ul>
+            </div>
+        </div>
+    )}
+
     <div class="border border-dashed border-neutral-400 p-3">
         <span class="font-bold">{t(lang, 'games')}</span>
         <div>
-            <StarList items={games} lang={lang} moreHref={postPath(lang, 'games')} moreLabel={more} />
+            <StarList items={playedGames} lang={lang} moreHref={postPath(lang, 'games-i-ve-played')} moreLabel={more} />
         </div>
     </div>
 

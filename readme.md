@@ -42,7 +42,7 @@ Text of the post in Markdown.
 - `title`, `date` are required.
 - `items` is optional. It renders the star list below the Markdown body. **Items are shown in file order** — there is no automatic sorting. The sidebar shows the first 5 items, so put your highest-rated entries first.
 - `slug` and language come from the path: `my-post/pt.md` → `/posts/my-post/`, `my-post/en.md` → `/en/posts/my-post/`.
-- Games and books are regular posts: `src/content/posts/games/` and `src/content/posts/books/`.
+- The rated lists are regular posts: `src/content/posts/games-i-ve-played/` and `src/content/posts/books/`.
 
 #### add a new blog post
 
@@ -53,6 +53,32 @@ Text of the post in Markdown.
 
 1. Delete the `src/content/posts/<slug>/` folder.
 2. Its generated routes disappear on the next build.
+
+#### games
+
+Games are regular posts with `type: game` and an `embed` URL. They live under `src/content/posts/<slug>/` and use the same routes and language toggles as any post.
+
+```md
+---
+title: contact at 6 o'clock
+date: "2026-11-09"
+type: game
+embed: "https://itch.io/embed-upload/14523908?color=2C2E2D"
+---
+
+Short description in Markdown.
+```
+
+- `embed` is rendered as a responsive iframe above the Markdown body.
+- A game is added and deleted like any other post.
+
+Games are currently disabled. `GAMES_ENABLED = false` in `src/lib/posts.ts` filters every `type: game` post from the blog lists and skips its page. The sidebar "my games" box only appears when at least one game is visible.
+
+To re-enable:
+
+1. Set `GAMES_ENABLED = true` in `src/lib/posts.ts`.
+2. Restore the `/my-games/` and `/en/my-games/` archive pages, `src/components/GameArchiveContent.astro`, and `src/data/games.ts` (removed while disabled).
+3. Rebuild and check the sidebar box, the game post pages, and the archive links.
 
 #### disable the blog
 

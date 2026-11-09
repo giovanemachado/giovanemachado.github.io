@@ -7,6 +7,8 @@ const posts = defineCollection({
     title: z.string(),
     date: z.string(),
     items: z.array(z.tuple([z.string(), z.number()])).optional(),
+    type: z.enum(['post', 'game']).default('post'),
+    embed: z.string().optional(),
   }),
 });
 

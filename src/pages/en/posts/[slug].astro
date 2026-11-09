@@ -23,7 +23,7 @@ const slug = entry.id.split('/')[0];
 ---
 
 <BaseLayout lang={lang} title={`${entry.data.title} - giovane machado`} altHref={`/posts/${slug}/`}>
-    <PostView title={entry.data.title} date={entry.data.date} items={entry.data.items} lang={lang}>
+    <PostView title={entry.data.title} date={entry.data.date} items={entry.data.items} embed={entry.data.embed} lang={lang}>
         <Content />
     </PostView>
 </BaseLayout>
