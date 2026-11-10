@@ -1,0 +1,12 @@
+---
+import BaseLayout from '@/components/BaseLayout.astro';
+import HomeContent from '@/components/HomeContent.astro';
+import DogBanner from '@/components/DogBanner.astro';
+
+const lang = 'pt-br';
+---
+
+<BaseLayout lang={lang} title="giovane machado" altHref="/en/">
+    <DogBanner slot="banner" />
+    <HomeContent lang={lang} />
+</BaseLayout>

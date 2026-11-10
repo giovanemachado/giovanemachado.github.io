@@ -1,0 +1,78 @@
+---
+import { itemsFor } from '@/data/lists';
+import { t, type Lang } from '@/i18n';
+import { archivePath, gamesArchivePath, postPath, recentGamesFor, recentPostsFor, topItems } from '@/lib/posts';
+import StarList from './StarList.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const recent = (await recentPostsFor(lang)).slice(0, 5);
+const myGames = (await recentGamesFor(lang)).slice(0, 5);
+const playedGames = topItems(itemsFor('games-i-ve-played'));
+const books = topItems(itemsFor('books'));
+const watched = topItems(itemsFor('watched'));
+const more = t(lang, 'more');
+---
+
+<aside id="sidebar-column" class="w-full lg:w-64 shrink-0 flex flex-col gap-4">
+    <div class="border border-dashed border-neutral-400 p-3">
+        <span class="font-bold">{t(lang, 'contact')}</span>
+        <div>
+            <ul>
+                <li>* <a class="underline" target="_blank" href="https://www.linkedin.com/in/giovanenolink">linkedin</a></li>
+                <li>* <a class="underline" target="_blank" href="https://github.com/giovanemachado">github</a></li>
+                <li>* <a class="underline" target="_blank" href="https://sangue1.itch.io">itch</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="border border-dashed border-neutral-400 p-3">
+        <span class="font-bold">{t(lang, 'blogs')}</span>
+        <div>
+            <ul>
+                {recent.map((post) => (
+                    <li>* <a class="underline" href={postPath(lang, post.slug)}>{post.entry.data.title}</a></li>
+                ))}
+                <li>* <a class="underline" href={archivePath(lang)}>{more}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    {myGames.length > 0 && (
+        <div class="border border-dashed border-neutral-400 p-3">
+            <span class="font-bold">{t(lang, 'myGames')}</span>
+            <div>
+                <ul>
+                    {myGames.map((game) => (
+                        <li>* <a class="underline" href={postPath(lang, game.slug)}>{game.entry.data.title}</a></li>
+                    ))}
+                    <li>* <a class="underline" href={gamesArchivePath(lang)}>{more}</a></li>
+                </ul>
+            </div>
+        </div>
+    )}
+
+    <div class="border border-dashed border-neutral-400 p-3">
+        <span class="font-bold">{t(lang, 'games')}</span>
+        <div>
+            <StarList items={playedGames} lang={lang} moreHref={postPath(lang, 'games-i-ve-played')} moreLabel={more} />
+        </div>
+    </div>
+
+    <div class="border border-dashed border-neutral-400 p-3">
+        <span class="font-bold">{t(lang, 'books')}</span>
+        <div>
+            <StarList items={books} lang={lang} moreHref={postPath(lang, 'books')} moreLabel={more} />
+        </div>
+    </div>
+
+    <div class="border border-dashed border-neutral-400 p-3">
+        <span class="font-bold">{t(lang, 'watched')}</span>
+        <div>
+            <StarList items={watched} lang={lang} moreHref={postPath(lang, 'watched')} moreLabel={more} />
+        </div>
+    </div>
+</aside>

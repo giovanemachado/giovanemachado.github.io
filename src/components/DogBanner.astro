@@ -1,0 +1,36 @@
+---
+const dogs = [
+    { id: 'tralha', src: '/assets/tralha.jpeg' },
+    { id: 'treco', src: '/assets/treco.png' },
+    { id: 'tirulico', src: '/assets/tirulico.png' },
+];
+---
+
+<div id={dogs[0].id} class="aspect-video w-full overflow-hidden">
+    <img class="w-full h-full object-cover" src={dogs[0].src} alt="um dos meus cachorrinhos / one of my dogs" />
+</div>
+{dogs.slice(1).map((dog) => (
+    <div id={dog.id} style="display:none" class="aspect-video w-full overflow-hidden">
+        <img class="w-full h-full object-cover" src={dog.src} alt="um dos meus cachorrinhos / one of my dogs" />
+    </div>
+))}
+
+<script is:inline>
+    (() => {
+        const dogs = ['tralha', 'treco', 'tirulico'];
+        let raw;
+        try {
+            raw = Number.parseInt(localStorage.getItem('dogCounter'), 10);
+        } catch {}
+        const index = Number.isNaN(raw) ? 0 : (raw + 1) % dogs.length;
+        try {
+            localStorage.setItem('dogCounter', String(index));
+        } catch {}
+        const shown = document.getElementById(dogs[index]) || document.getElementById(dogs[0]);
+        for (const id of dogs) {
+            const el = document.getElementById(id);
+            if (el) el.style.display = 'none';
+        }
+        if (shown) shown.style.display = 'block';
+    })();
+</script>

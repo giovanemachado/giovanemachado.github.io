@@ -1,0 +1,26 @@
+---
+import { isEn, type Lang } from '@/i18n';
+import { starsFor } from '@/lib';
+
+interface Props {
+  items: [string, number][];
+  lang: Lang;
+  moreHref?: string;
+  moreLabel?: string;
+}
+
+const { items, lang, moreHref, moreLabel } = Astro.props;
+const unit = isEn(lang) ? 'out of 5' : 'de 5';
+---
+
+<ul>
+    {items.map(([title, rating]) => (
+        <li class="flex justify-between gap-2">
+            <span>* {title}</span>
+            <span class="whitespace-nowrap" title={`${rating}/5`} aria-label={`${title}: ${rating} ${unit}`}>{starsFor(rating)}</span>
+        </li>
+    ))}
+    {moreHref && (
+        <li>* <a class="underline" href={moreHref}>{moreLabel}</a></li>
+    )}
+</ul>

@@ -1,0 +1,32 @@
+---
+import type { Lang } from '@/i18n';
+import StarList from './StarList.astro';
+
+interface Props {
+  title: string;
+  date: string;
+  items?: [string, number][];
+  lang: Lang;
+  embed?: string;
+}
+
+const { title, date, items, lang, embed } = Astro.props;
+---
+
+<div>
+    <h2 class="text-xl font-bold">{title}</h2>
+    <p class="opacity-70">{date}</p>
+    {embed && (
+        <div class="game-embed mt-4">
+            <iframe src={embed} frameborder="0" allowfullscreen title={title} loading="lazy"></iframe>
+        </div>
+    )}
+    <br />
+    <div class="post-body"><slot /></div>
+    {items && items.length > 0 && (
+        <>
+            <br />
+            <StarList items={items} lang={lang} />
+        </>
+    )}
+</div>

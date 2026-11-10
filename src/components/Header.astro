@@ -1,0 +1,20 @@
+---
+import type { Lang } from '@/i18n';
+
+interface Props {
+  lang: Lang;
+  ptHref: string;
+  enHref: string;
+}
+
+const { lang, ptHref, enHref } = Astro.props;
+const homeHref = lang === 'en-us' ? '/en/' : '/';
+---
+
+<div class="flex w-full justify-between mt-0 mb-2">
+    <a class="underline" href={homeHref}><h1 class="text-3xl font-bold ">giovane machado</h1></a>
+    <div class="flex flex-col">
+        <a class="underline" href={ptHref} aria-current={lang === 'pt-br' ? 'page' : undefined}>pt-br</a>
+        <a class="underline" href={enHref} aria-current={lang === 'en-us' ? 'page' : undefined}>en-us</a>
+    </div>
+</div>

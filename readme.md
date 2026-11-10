@@ -2,38 +2,96 @@
 
 <li><a href="https://giovanemachado.github.io/">giovanemachado.github.io</a></li>
 
+Static personal site built with Astro and deployed to GitHub Pages. The build output is plain HTML/CSS in `dist/`.
+
 ### utils
-- you can run the server with anything (it is just html and js), for example: `python3 -m http.server`, which will make it work on localhost:8000
-- autodeploy on merge with main (see actions)
-- uncomment `<!-- <script src="https://cdn.tailwindcss.com"></script> -->` for dev
-- run `npx tailwindcss@3.4.18 -o assets/build.css --minify` to build tailwind css (pinned version)
 
-### blog posts (enabled)
+- `npm install` — install dependencies.
+- `npm run dev` — local dev server with hot reload.
+- `npm run build` — generate the static site into `dist/`.
+- `npm run preview` — serve the built `dist/` locally.
+- You can also serve a build with anything, for example `python3 -m http.server` inside `dist/`.
+- Tailwind is pinned to `3.4.18` and runs during the Astro build. There is no CDN script and no separate CSS build step.
+- Autodeploy on merge with `main` via GitHub Actions (`.github/workflows/deploy.yml`). After the first deploy, set **Settings → Pages → Source: GitHub Actions** once.
 
-home has no posts list in the main column — posts live only in the sidebar `blogs` box, and `posts/blog.html` renders them. direct urls like `/posts/blog.html?lang=pt-br&post=games-pt` work; bare `posts/blog.html` shows the `all` archive post. when `lang=` and the post suffix disagree, the post suffix wins (page shows that language and syncs `lang=` to it).
+### blog
 
-how it works:
-- home section lives as `homeTemplate()` in `stuff/home.js` (rendered into `#home-content` by `showContent()` — no `fetch()`, no fragment files; copy lives in the `STRINGS` table in `stuff/site.js`). the sidebar (`#sidebar-column`, shared with `posts/blog.html` via `stuff/sidebar.js`) holds contact/blogs/games/books boxes: blogs shows the 5 most recent post titles + archive link, games + books show top 5 by stars (`top5ByStars`) with a `ver lista completa / see full list` link to their post.
-- each post lives in a single file in `posts/`: `posts/<slug>.js` pushes `{ slug, date, title, intro, body?, items? }` to `window.POSTS_DATA` (`items` is an array of arrays, `title`/`intro`/`body` hold both languages; `body` is raw HTML rendered verbatim between `intro` and the star list). a post with `archive: true` (see `posts/all.js`) renders a complete newest-first link list of all posts instead of body/star rows. `stuff/blog.js` generates both `POSTS['<slug>-pt']` / `POSTS['<slug>-en']` bodies from it. lists shared with home (games/books) live in their post file and are also loaded by `index.html`.
-- post pages are rendered by `firstLoadBlog()` in `stuff/blog.js` via `posts/blog.html`, which loads `manifest.js` (post file list) plus `../stuff/site.js` / `../stuff/sidebar.js` / `../stuff/blog.js`. `ensureDataLoaded()` in `stuff/site.js` fetches the listed post files, so neither page needs one `<script>` tag per post.
-- note: there are no fragment files, so direct urls like `/posts/games.html` don't exist and fall through to `/404.html`. only the `blog.html` entry point redirects via JS.
+The home pages have no posts list in the main column — posts live in the sidebar `blogs` box. The sidebar shows the 5 most recent posts and links to the archive. Portuguese lives at `/posts/` and English at `/en/posts/`.
 
-#### disable the blog
+Each post is a folder under `src/content/posts/<slug>/` with two Markdown files, one per language:
 
-1. `stuff/sidebar.js` (`renderSidebar`): drop the `renderBlogsBox(lang)` call.
-2. `stuff/blog.js` (`firstLoadBlog`): add `goNotFound(); return;` at the top.
-3. serve with `python3 -m http.server` and check both `pt-br`/`en-us` toggles still work and post urls redirect to `/404.html`.
+```
+src/content/posts/my-post/
+  pt.md
+  en.md
+```
+
+Frontmatter:
+
+```md
+---
+title: meu post
+date: "2026-11-08"
+---
+
+Text of the post in Markdown.
+```
+
+- `title`, `date` are required.
+- `slug` and language come from the path: `my-post/pt.md` → `/posts/my-post/`, `my-post/en.md` → `/en/posts/my-post/`.
+
+#### rated lists
+
+The rated lists (`books`, `games-i-ve-played`, `watched`) keep their entries in one place: `src/data/lists.ts`, keyed by post slug. Write each entry once there — both languages read the same list, so you no longer duplicate it in `pt.md` and `en.md`.
+
+- Entries are shown in file order; there is no automatic sorting. Put your highest-rated entries first, because the sidebar shows the first 5.
+- The Markdown files for a list only hold the per-language `title` and prose.
+- A regular post can still define an inline `items:` array in its frontmatter; it is only used when the slug is not in `src/data/lists.ts`.
+- The rated-list posts are `src/content/posts/games-i-ve-played/`, `src/content/posts/books/`, and `src/content/posts/watched/`.
+
+To add an entry, put it in the matching array in `src/data/lists.ts` and rebuild. To add a new rated list, add a key to `LISTS`, create `src/content/posts/<slug>/{pt,en}.md` with titles and prose, add a sidebar label to `src/i18n.ts`, and add a box to `src/components/Sidebar.astro`.
 
 #### add a new blog post
 
-1. duplicate `posts/games.js` to `posts/<slug>.js`. update `slug`, `date`, `title`/`intro` (both languages), and `items` (array of arrays, omit or leave empty for a text-only post; add `body: { 'pt-br': '<p>...', 'en-us': '<p>...' }` with raw HTML for essay-style posts, rendered between `intro` and the list; set `archive: true` instead for a full posts index like `posts/all.js`). the `-pt` / `-en` post keys are generated from the slug: language switching (`counterpartOf`) depends on the slug staying the same in both.
-2. list it — append `'<slug>'` to `window.POSTS_FILES` in `posts/manifest.js`. no HTML edits needed (`stuff/site.js` loads the files automatically, resolving `posts/` from the manifest tag).
-3. serve with `python3 -m http.server` and check the new entry appears in both languages and opens via `blog.html`.
+1. Create `src/content/posts/<slug>/pt.md` and `src/content/posts/<slug>/en.md` with the frontmatter and Markdown body.
+2. Build (`npm run build`) or run `npm run dev`. Astro generates both language routes automatically.
 
 #### delete a blog post
 
-1. remove its entry from `window.POSTS_FILES` in `posts/manifest.js`.
-2. delete its file (`posts/<slug>.js`). old `blog.html?post=<slug>-*` urls then redirect to `/404.html`.
+1. Delete the `src/content/posts/<slug>/` folder.
+2. Its generated routes disappear on the next build.
+
+#### games
+
+Games are regular posts with `type: game` and an `embed` URL. They live under `src/content/posts/<slug>/` and use the same routes and language toggles as any post.
+
+```md
+---
+title: contact at 6 o'clock
+date: "2026-11-09"
+type: game
+embed: "https://itch.io/embed-upload/14523908?color=2C2E2D"
+---
+
+Short description in Markdown.
+```
+
+- `embed` is rendered as a responsive iframe above the Markdown body.
+- A game is added and deleted like any other post.
+
+Games are currently disabled. `GAMES_ENABLED = false` in `src/lib/posts.ts` filters every `type: game` post from the blog lists and skips its page. The sidebar "my games" box only appears when at least one game is visible.
+
+To re-enable:
+
+1. Set `GAMES_ENABLED = true` in `src/lib/posts.ts`.
+2. Restore the `/my-games/` and `/en/my-games/` archive pages, `src/components/GameArchiveContent.astro`, and `src/data/games.ts` (removed while disabled).
+3. Rebuild and check the sidebar box, the game post pages, and the archive links.
+
+#### disable the blog
+
+1. Remove the `blogs` box from `src/components/Sidebar.astro`.
+2. Remove `src/pages/posts/` and `src/pages/en/posts/`.
+3. Rebuild and check both languages.
 
 ### protect main — local pre-push hook
 
