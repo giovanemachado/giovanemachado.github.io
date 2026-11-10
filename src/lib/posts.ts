@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import type { Lang } from '../i18n';
+import type { Lang } from '@/i18n';
 
 const LANG_FILE: Record<string, Lang> = {
   pt: 'pt-br',

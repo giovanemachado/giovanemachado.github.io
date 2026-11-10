@@ -1,9 +1,10 @@
 ---
-import BaseLayout from '../../components/BaseLayout.astro';
-import PostView from '../../components/PostView.astro';
+import BaseLayout from '@/components/BaseLayout.astro';
+import PostView from '@/components/PostView.astro';
+import { itemsFor } from '@/data/lists';
+import type { Lang } from '@/i18n';
+import { postsFor } from '@/lib/posts';
 import { render, type CollectionEntry } from 'astro:content';
-import { postsFor } from '../../lib/posts';
-import type { Lang } from '../../i18n';
 
 export async function getStaticPaths() {
     return (await postsFor('pt-br')).map(({ slug, entry }) => ({
@@ -23,7 +24,7 @@ const slug = entry.id.split('/')[0];
 ---
 
 <BaseLayout lang={lang} title={`${entry.data.title} - giovane machado`} altHref={`/en/posts/${slug}/`}>
-    <PostView title={entry.data.title} date={entry.data.date} items={entry.data.items} embed={entry.data.embed} lang={lang}>
+    <PostView title={entry.data.title} date={entry.data.date} items={itemsFor(slug) ?? entry.data.items} embed={entry.data.embed} lang={lang}>
         <Content />
     </PostView>
 </BaseLayout>

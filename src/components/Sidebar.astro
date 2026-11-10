@@ -1,6 +1,7 @@
 ---
-import { t, type Lang } from '../i18n';
-import { archivePath, gamesArchivePath, postPath, postsFor, recentGamesFor, recentPostsFor, topItems } from '../lib/posts';
+import { itemsFor } from '@/data/lists';
+import { t, type Lang } from '@/i18n';
+import { archivePath, gamesArchivePath, postPath, recentGamesFor, recentPostsFor, topItems } from '@/lib/posts';
 import StarList from './StarList.astro';
 
 interface Props {
@@ -10,9 +11,9 @@ interface Props {
 const { lang } = Astro.props;
 const recent = (await recentPostsFor(lang)).slice(0, 5);
 const myGames = (await recentGamesFor(lang)).slice(0, 5);
-const all = await postsFor(lang);
-const playedGames = topItems(all.find((post) => post.slug === 'games-i-ve-played')?.entry.data.items);
-const books = topItems(all.find((post) => post.slug === 'books')?.entry.data.items);
+const playedGames = topItems(itemsFor('games-i-ve-played'));
+const books = topItems(itemsFor('books'));
+const watched = topItems(itemsFor('watched'));
 const more = t(lang, 'more');
 ---
 
@@ -65,6 +66,13 @@ const more = t(lang, 'more');
         <span class="font-bold">{t(lang, 'books')}</span>
         <div>
             <StarList items={books} lang={lang} moreHref={postPath(lang, 'books')} moreLabel={more} />
+        </div>
+    </div>
+
+    <div class="border border-dashed border-neutral-400 p-3">
+        <span class="font-bold">{t(lang, 'watched')}</span>
+        <div>
+            <StarList items={watched} lang={lang} moreHref={postPath(lang, 'watched')} moreLabel={more} />
         </div>
     </div>
 </aside>

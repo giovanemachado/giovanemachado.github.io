@@ -1,4 +1,4 @@
-import type { Lang } from '../i18n';
+import type { Lang } from '@/i18n';
 
 export const archive = {
   date: '2026-10-14',

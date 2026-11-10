@@ -13,14 +13,19 @@ Static personal site built with Astro and deployed to GitHub Pages. The build ou
   - `en/posts/[slug].astro` — en-us posts (`/en/posts/<slug>/`).
   - `404.astro` — static bilingual 404.
 - `src/content.config.ts` — Astro content collection `posts`, loaded from `src/content/posts/**/*.md`. Schema: `title` (string), `date` (string), `items` (`[title, rating][]`, optional), `type` (`'post' | 'game'`, default `'post'`), `embed` (string, optional).
-- `src/content/posts/<slug>/{pt,en}.md` — one Markdown file per post per language. `slug` and language are derived from the path (`games-i-ve-played/pt.md` → slug `games-i-ve-played`, lang `pt-br`). The Markdown body is the post content. `items` renders a star list below it. A post with `type: game` and `embed` renders a responsive iframe above the body.
-- `src/lib/posts.ts` — `postsFor(lang)`, `recentPostsFor(lang)`, `postPath()`, `archivePath()`, `topItems()`, plus the game helpers `gamesFor()`, `recentGamesFor()`, `gamesArchivePath()` and the `GAMES_ENABLED` flag. No star sorting: `items` is displayed in file order and the sidebar takes the first 5.
+- `src/content/posts/<slug>/{pt,en}.md` — one Markdown file per post per language. `slug` and language are derived from the path (`games-i-ve-played/pt.md` → slug `games-i-ve-played`, lang `pt-br`). The Markdown body is the post content. A post with `type: game` and `embed` renders a responsive iframe above the body. Rated lists do not put `items` in these files; see `src/data/lists.ts`.
+- `src/lib/posts.ts` — `postsFor(lang)`, `recentPostsFor(lang)`, `postPath()`, `archivePath()`, `topItems()`, plus the game helpers `gamesFor()`, `recentGamesFor()`, `gamesArchivePath()` and the `GAMES_ENABLED` flag. No star sorting: entries are displayed in file order and the sidebar takes the first 5.
+- `src/data/lists.ts` — single source of truth for the rated lists (`books`, `games-i-ve-played`, `watched`), keyed by post slug, plus `itemsFor(slug)`. Both languages read the same entries, so lists are not duplicated in the Markdown files. Inline `items` in a post's frontmatter is still supported as a fallback.
 - `src/data/archive.ts` — title/intro/date copy for the generated archive pages.
 - `src/i18n.ts` — `Lang` (`'pt-br' | 'en-us'`), the `STRINGS` copy table, `t()`, `isEn()`, `otherLang()`.
 - `src/components/` — `BaseLayout.astro` (head, header, sidebar, footer), `Header.astro`, `Sidebar.astro`, `StarList.astro`, `PostView.astro`, `ArchiveContent.astro`, `HomeContent.astro`, `DogBanner.astro`.
 - `src/styles/global.css` — Tailwind directives + hand-editable body background. Never hand-edit generated CSS.
 - `public/assets/` — images served at `/assets/...`.
 - `.github/workflows/deploy.yml` — builds and deploys `dist/` to GitHub Pages on push to `main`.
+
+## Imports
+
+- `@/*` maps to `src/*` via `compilerOptions.paths` in `tsconfig.json` (Astro/Vite resolve it; no `vite` alias needed). Import across directories as `@/components/BaseLayout.astro`, `@/lib/posts`, `@/i18n`, `@/styles/global.css`. Keep `./` for imports inside the same directory; never climb out with `../`.
 
 ## Routing and languages
 

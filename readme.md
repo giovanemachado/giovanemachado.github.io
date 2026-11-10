@@ -32,17 +32,24 @@ Frontmatter:
 ---
 title: meu post
 date: "2026-11-08"
-items:
-  - ["some game", 5]
 ---
 
 Text of the post in Markdown.
 ```
 
 - `title`, `date` are required.
-- `items` is optional. It renders the star list below the Markdown body. **Items are shown in file order** — there is no automatic sorting. The sidebar shows the first 5 items, so put your highest-rated entries first.
 - `slug` and language come from the path: `my-post/pt.md` → `/posts/my-post/`, `my-post/en.md` → `/en/posts/my-post/`.
-- The rated lists are regular posts: `src/content/posts/games-i-ve-played/` and `src/content/posts/books/`.
+
+#### rated lists
+
+The rated lists (`books`, `games-i-ve-played`, `watched`) keep their entries in one place: `src/data/lists.ts`, keyed by post slug. Write each entry once there — both languages read the same list, so you no longer duplicate it in `pt.md` and `en.md`.
+
+- Entries are shown in file order; there is no automatic sorting. Put your highest-rated entries first, because the sidebar shows the first 5.
+- The Markdown files for a list only hold the per-language `title` and prose.
+- A regular post can still define an inline `items:` array in its frontmatter; it is only used when the slug is not in `src/data/lists.ts`.
+- The rated-list posts are `src/content/posts/games-i-ve-played/`, `src/content/posts/books/`, and `src/content/posts/watched/`.
+
+To add an entry, put it in the matching array in `src/data/lists.ts` and rebuild. To add a new rated list, add a key to `LISTS`, create `src/content/posts/<slug>/{pt,en}.md` with titles and prose, add a sidebar label to `src/i18n.ts`, and add a box to `src/components/Sidebar.astro`.
 
 #### add a new blog post
 
